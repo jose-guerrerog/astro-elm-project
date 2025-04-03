@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+---
+
+<Layout title="Bellroy Products">
+  <main>
+    <div class="header">
+      <h1>Bellroy Wallets</h1>
+      <p>Premium wallets designed with elegant simplicity and thoughtful organization.</p>
+    </div>
+    
+    <div id="elm-app"></div>
+  </main>
+</Layout>
+
+<!-- Load Elm as a regular script tag outside the Astro script block -->
+<script is:inline src="/elm/main.js"></script>
+
+<script>
+  // Use a type assertion to tell TypeScript about the Elm global
+  document.addEventListener('DOMContentLoaded', () => {
+    // Type assertion to handle the Elm global object
+    const elmApp = (window as any).Elm.Main.init({
+      node: document.getElementById('elm-app'),
+      flags: window.innerWidth
+    });
+    
+    // Listen for window resize events to update the Elm app
+    window.addEventListener('resize', () => {
+      elmApp.ports.windowResized.send(window.innerWidth);
+    });
+  });
+</script>

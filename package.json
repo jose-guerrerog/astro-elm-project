@@ -4,11 +4,17 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run elm:build && astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "elm:build": "elm make src/elm/Main.elm --output=public/elm/main.js",
+    "elm:watch": "elm-live src/elm/Main.elm --port=3000 --dir=public -- --output=public/elm/main.js"
   },
   "dependencies": {
     "astro": "^5.5.5"
+  },
+  "devDependencies": {
+    "elm": "^0.19.1-6",
+    "vite-plugin-elm": "^3.0.1"
   }
 }
