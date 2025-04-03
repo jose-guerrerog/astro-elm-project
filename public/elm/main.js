@@ -5175,7 +5175,7 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 				{hex: '#A05B3B', name: 'Brown'},
 				{hex: '#5D3D32', name: 'Cocoa'}
 			]),
-		description: 'Card wallet for 6 – 8 cards, folded bills.',
+		description: 'Card wallet for 6 – 8 cards, folded bills',
 		features: _List_fromArray(
 			['Quick access card slots', 'RFID protection', 'Premium, environmentally certified leather', '3 year warranty']),
 		id: 1,
@@ -5193,7 +5193,7 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 			[
 				{hex: '#000000', name: 'Black'}
 			]),
-		description: 'Billfold for 5 – 11 cards, folded bills.',
+		description: 'Billfold for 5 – 11 cards, folded bills',
 		features: _List_fromArray(
 			['Magnetic closure mechanism', 'Holds 6-8 cards and cash', 'Premium, environmentally certified leather', '5 year warranty']),
 		id: 2,
@@ -5215,7 +5215,7 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 				{hex: '#A05B3B', name: 'Brown'},
 				{hex: '#A15E2C', name: 'Caramel'}
 			]),
-		description: 'Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets.',
+		description: 'Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets',
 		features: _List_fromArray(
 			['RFID protection', 'Passport pocket', 'Ticket and boarding pass section', 'SIM card storage', 'Micro travel pen included']),
 		id: 3,
@@ -5320,6 +5320,7 @@ var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $author$project$ProductCard$MouseEnter = {$: 'MouseEnter'};
 var $author$project$ProductCard$MouseLeave = {$: 'MouseLeave'};
+var $elm$core$String$fromFloat = _String_fromNumber;
 var $elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -5380,40 +5381,7 @@ var $author$project$ProductCard$viewColorOptions = function (product) {
 			},
 			product.colors));
 };
-var $author$project$ProductCard$viewProductDescription = function (product) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('product-description')
-			]),
-		_List_fromArray(
-			[
-				$elm$html$Html$text(product.description)
-			]));
-};
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
-var $elm$core$List$drop = F2(
-	function (n, list) {
-		drop:
-		while (true) {
-			if (n <= 0) {
-				return list;
-			} else {
-				if (!list.b) {
-					return list;
-				} else {
-					var x = list.a;
-					var xs = list.b;
-					var $temp$n = n - 1,
-						$temp$list = xs;
-					n = $temp$n;
-					list = $temp$list;
-					continue drop;
-				}
-			}
-		}
-	});
 var $elm$core$List$head = function (list) {
 	if (list.b) {
 		var x = list.a;
@@ -5440,19 +5408,10 @@ var $elm$core$Maybe$withDefault = F2(
 		}
 	});
 var $author$project$ProductCard$viewProductImage = function (model) {
-	var currentImage = function () {
-		var _v0 = $elm$core$List$head(
-			A2($elm$core$List$drop, model.currentImageIndex, model.product.images));
-		if (_v0.$ === 'Just') {
-			var img = _v0.a;
-			return img;
-		} else {
-			return A2(
-				$elm$core$Maybe$withDefault,
-				'',
-				$elm$core$List$head(model.product.images));
-		}
-	}();
+	var currentImage = A2(
+		$elm$core$Maybe$withDefault,
+		'',
+		$elm$core$List$head(model.product.images));
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5470,51 +5429,7 @@ var $author$project$ProductCard$viewProductImage = function (model) {
 						$elm$html$Html$Attributes$class('product-image')
 					]),
 				_List_Nil),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
-						A2($elm$html$Html$Attributes$style, 'top', '20px'),
-						A2($elm$html$Html$Attributes$style, 'left', '20px'),
-						A2($elm$html$Html$Attributes$style, 'width', '40px'),
-						A2($elm$html$Html$Attributes$style, 'height', '40px'),
-						A2($elm$html$Html$Attributes$style, 'border-radius', '50%'),
-						A2($elm$html$Html$Attributes$style, 'background-color', '#4285f4'),
-						A2($elm$html$Html$Attributes$style, 'display', 'flex'),
-						A2($elm$html$Html$Attributes$style, 'align-items', 'center'),
-						A2($elm$html$Html$Attributes$style, 'justify-content', 'center')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$img,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$src('https://xsgames.co/randomusers/assets/avatars/male/8.jpg'),
-								$elm$html$Html$Attributes$alt('Profile'),
-								A2($elm$html$Html$Attributes$style, 'width', '36px'),
-								A2($elm$html$Html$Attributes$style, 'height', '36px'),
-								A2($elm$html$Html$Attributes$style, 'border-radius', '50%')
-							]),
-						_List_Nil)
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						A2($elm$html$Html$Attributes$style, 'position', 'absolute'),
-						A2($elm$html$Html$Attributes$style, 'bottom', '20px'),
-						A2($elm$html$Html$Attributes$style, 'left', '20px'),
-						A2($elm$html$Html$Attributes$style, 'color', 'white'),
-						A2($elm$html$Html$Attributes$style, 'font-size', '14px'),
-						A2($elm$html$Html$Attributes$style, 'font-weight', 'bold')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text('Feeling like a Neo')
-					])),
-				A2(
+				model.isHovered ? A2(
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
@@ -5525,117 +5440,13 @@ var $author$project$ProductCard$viewProductImage = function (model) {
 				_List_fromArray(
 					[
 						$elm$html$Html$text('SHOW INSIDE +')
-					]))
-			]));
-};
-var $elm$core$String$fromFloat = _String_fromNumber;
-var $elm$html$Html$span = _VirtualDom_node('span');
-var $author$project$ProductCard$viewProductName = function (product) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('product-name-container')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('name-category')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$span,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('product-name')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(product.name)
-							])),
-						A2(
-						$elm$html$Html$span,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('product-category')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('– ' + product.category)
-							]))
-					])),
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('product-price')
-					]),
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						'$' + $elm$core$String$fromFloat(product.price))
-					]))
+					])) : $elm$html$Html$text('')
 			]));
 };
 var $author$project$ProductCard$CloseQuickView = {$: 'CloseQuickView'};
 var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$p = _VirtualDom_node('p');
-var $elm$core$Basics$neq = _Utils_notEqual;
-var $author$project$ProductCard$viewPrice = function (product) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('product-price')
-			]),
-		_List_fromArray(
-			[
-				(!_Utils_eq(product.salePrice, $elm$core$Maybe$Nothing)) ? A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('price-container')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$span,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('original-price')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(
-								'$' + $elm$core$String$fromFloat(product.price))
-							])),
-						A2(
-						$elm$html$Html$span,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('sale-price')
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text(
-								'$' + $elm$core$String$fromFloat(
-									A2($elm$core$Maybe$withDefault, 0, product.salePrice)))
-							]))
-					])) : A2(
-				$elm$html$Html$span,
-				_List_Nil,
-				_List_fromArray(
-					[
-						$elm$html$Html$text(
-						'$' + $elm$core$String$fromFloat(product.price))
-					]))
-			]));
-};
 var $author$project$ProductCard$viewQuickViewModal = function (model) {
 	return A2(
 		$elm$html$Html$div,
@@ -5732,7 +5543,17 @@ var $author$project$ProductCard$viewQuickViewModal = function (model) {
 											[
 												$elm$html$Html$text(model.product.description)
 											])),
-										$author$project$ProductCard$viewPrice(model.product),
+										A2(
+										$elm$html$Html$div,
+										_List_fromArray(
+											[
+												$elm$html$Html$Attributes$class('modal-price')
+											]),
+										_List_fromArray(
+											[
+												$elm$html$Html$text(
+												'$' + $elm$core$String$fromFloat(model.product.price))
+											])),
 										A2(
 										$elm$html$Html$div,
 										_List_fromArray(
@@ -5791,8 +5612,7 @@ var $author$project$ProductCard$view = function (model) {
 			[
 				$elm$html$Html$Attributes$class('product-card'),
 				$elm$html$Html$Events$onMouseEnter($author$project$ProductCard$MouseEnter),
-				$elm$html$Html$Events$onMouseLeave($author$project$ProductCard$MouseLeave),
-				A2($elm$html$Html$Attributes$style, 'cursor', 'default')
+				$elm$html$Html$Events$onMouseLeave($author$project$ProductCard$MouseLeave)
 			]),
 		_List_fromArray(
 			[
@@ -5805,8 +5625,56 @@ var $author$project$ProductCard$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						$author$project$ProductCard$viewProductName(model.product),
-						$author$project$ProductCard$viewProductDescription(model.product),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('product-title')
+							]),
+						_List_fromArray(
+							[
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('product-name')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text(model.product.name)
+									])),
+								A2(
+								$elm$html$Html$div,
+								_List_fromArray(
+									[
+										$elm$html$Html$Attributes$class('product-category')
+									]),
+								_List_fromArray(
+									[
+										$elm$html$Html$text('– ' + model.product.category)
+									]))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('product-price')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(
+								'$' + $elm$core$String$fromFloat(model.product.price))
+							])),
+						A2(
+						$elm$html$Html$div,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class('product-description')
+							]),
+						_List_fromArray(
+							[
+								$elm$html$Html$text(model.product.description)
+							])),
 						$author$project$ProductCard$viewColorOptions(model.product)
 					])),
 				model.isQuickViewOpen ? $author$project$ProductCard$viewQuickViewModal(model) : $elm$html$Html$text('')

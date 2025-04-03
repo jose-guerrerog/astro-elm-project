@@ -29,7 +29,7 @@ getWallets =
       , category = "RFID safe"
       , price = 129.00
       , salePrice = Nothing
-      , description = "Card wallet for 6 – 8 cards, folded bills."
+      , description = "Card wallet for 6 – 8 cards, folded bills"
       , images =
             [ "/images/flip-case-brown.png"
             , "/images/flip-case-blue.png"
@@ -57,7 +57,7 @@ getWallets =
       , category = "Carryology Essentials Edition"
       , price = 119.00
       , salePrice = Nothing
-      , description = "Billfold for 5 – 11 cards, folded bills."
+      , description = "Billfold for 5 – 11 cards, folded bills"
       , images =
             [
              "/images/slim-sleeve-black.png"
@@ -79,7 +79,7 @@ getWallets =
       , category = "RFID safe"
       , price = 199.00
       , salePrice = Nothing
-      , description = "Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets."
+      , description = "Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets"
       , images =
             [ "/images/travel-wallet-brown.png"
             , "/images/travel-wallet-gray.png"
