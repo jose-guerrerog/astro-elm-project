@@ -32,7 +32,7 @@ getWallets =
       , salePrice = Nothing
       , description = "Card wallet for 6 – 8 cards, folded bills"
       , images =
-            [ "/images/flip-case-brown.png" ]
+            [ "/images/flip-case-blue.png" ]  -- Default image (blue)
       , colorImages =
             [ "/images/flip-case-blue.png"   -- Blue
             , "/images/flip-case-green.png"  -- Green
@@ -81,7 +81,7 @@ getWallets =
       , salePrice = Nothing
       , description = "Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets"
       , images =
-            [ "/images/travel-wallet-brown.png" ]
+            [ "/images/travel-wallet-green.png" ]  -- Default image (green)
       , colorImages =
             [ "/images/travel-wallet-green.png"  -- Green
             , "/images/travel-wallet-brown.png"  -- Brown

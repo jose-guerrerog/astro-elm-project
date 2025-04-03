@@ -53,6 +53,11 @@ update msg model =
             ( { model | isQuickViewOpen = False }, Cmd.none )
             
         SelectColor colorIndex ->
+            -- Log color selection for debugging
+            let
+                _ = Debug.log "Color selected" colorIndex
+            in
+            -- Update the selected color index
             ( { model | selectedColorIndex = colorIndex }, Cmd.none )
 
 
@@ -85,16 +90,23 @@ view model =
 viewProductImage : Model -> Html Msg
 viewProductImage model =
     let
+        -- Log selected color index and available images for debugging
+        _ = Debug.log "Selected color index" model.selectedColorIndex
+        _ = Debug.log "Available color images" model.product.colorImages
+        
+        -- Get current image based on selected color
         imageUrl =
             if model.selectedColorIndex < List.length model.product.colorImages then
-                case List.drop model.selectedColorIndex model.product.colorImages |> List.head of
-                    Just img ->
-                        img
-
-                    Nothing ->
-                        List.head model.product.images |> Maybe.withDefault ""
+                -- Get the image at the selected index
+                Maybe.withDefault 
+                    (List.head model.product.images |> Maybe.withDefault "") 
+                    (List.head (List.drop model.selectedColorIndex model.product.colorImages))
             else
+                -- Fallback to first image if index is out of bounds
                 List.head model.product.images |> Maybe.withDefault ""
+                
+        -- Log the image URL being used
+        _ = Debug.log "Using image URL" imageUrl
     in
     div [ class "product-image-container" ]
         [ img
@@ -119,6 +131,10 @@ viewColorOptions model product =
     div [ class "color-options" ]
         (List.indexedMap
             (\index color ->
+                let
+                    -- Log each color for debugging
+                    _ = Debug.log ("Color option " ++ String.fromInt index) color.name
+                in
                 button
                     [ class 
                         (if index == model.selectedColorIndex then
@@ -138,23 +154,22 @@ viewColorOptions model product =
 
 viewQuickViewModal : Model -> Html Msg
 viewQuickViewModal model =
+    let
+        imageUrl =
+            if model.selectedColorIndex < List.length model.product.colorImages then
+                Maybe.withDefault 
+                    (List.head model.product.images |> Maybe.withDefault "") 
+                    (List.head (List.drop model.selectedColorIndex model.product.colorImages))
+            else
+                List.head model.product.images |> Maybe.withDefault ""
+    in
     div [ class "quick-view-overlay" ]
         [ div [ class "quick-view-modal" ]
             [ button [ class "close-modal-btn", onClick CloseQuickView ] [ text "×" ]
             , div [ class "modal-content" ]
                 [ div [ class "modal-image-container" ]
                     [ img
-                        [ src 
-                            (if model.selectedColorIndex < List.length model.product.colorImages then
-                                case List.drop model.selectedColorIndex model.product.colorImages |> List.head of
-                                    Just img ->
-                                        img
-
-                                    Nothing ->
-                                        List.head model.product.images |> Maybe.withDefault ""
-                            else
-                                List.head model.product.images |> Maybe.withDefault ""
-                            )
+                        [ src imageUrl
                         , alt model.product.name
                         , class "modal-image"
                         ]

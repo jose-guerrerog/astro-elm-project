@@ -38,6 +38,7 @@ body {
   margin: 0 auto;
   padding: var(--spacing-lg);
   box-sizing: border-box;
+  margin-bottom: 80px; /* Add bottom margin to prevent footer overlap */
 }
 
 /* Header Styles */
@@ -76,6 +77,7 @@ body {
   display: flex;
   flex-direction: column;
   padding: 1.5rem;
+  padding-bottom: 2.5rem; /* Added more padding at bottom */
   background-color: var(--card-background);
   height: 100%;
   border-radius: 4px; /* Optional: adds slight rounding to card edges */
@@ -169,28 +171,28 @@ body {
 /* Color Options */
 .color-options {
   display: flex;
-  gap: 0.3rem;
-  margin-top: 0.5rem;
+  gap: 8px;  /* Adjusted gap between color options */
+  margin-top: 0.75rem;
 }
 
 .color-option {
-  width: 24px;
-  height: 24px;
+  width: 20px;  /* Smaller button size to match design */
+  height: 20px;  /* Smaller button size to match design */
   border-radius: 50%;
   border: none;
   cursor: pointer;
   transition: all var(--transition-speed);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.15);  /* Subtler outline */
 }
 
 .color-option:hover {
   transform: scale(1.1);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
 }
 
 .color-option-selected {
   transform: scale(1.1);
-  box-shadow: 0 0 0 2px var(--primary-color);
+  box-shadow: 0 0 0 1px #000;  /* Black outline for selected color */
 }
 
 /* Quick View Modal */
@@ -299,8 +301,8 @@ body {
 }
 
 .modal-color-option {
-  width: 24px;
-  height: 24px;
+  width: 20px; /* Match the size of the main color options */
+  height: 20px; /* Match the size of the main color options */
   border-radius: 50%;
   border: 1px solid var(--border-color);
   cursor: pointer;
@@ -308,7 +310,7 @@ body {
 
 .modal-color-selected {
   transform: scale(1.1);
-  box-shadow: 0 0 0 2px var(--primary-color);
+  box-shadow: 0 0 0 1px #000;  /* Black outline for selected color */
 }
 
 .add-to-cart-btn {
@@ -327,6 +329,11 @@ body {
 
 .add-to-cart-btn:hover {
   background-color: black;
+}
+
+/* Footer Spacing */
+.site-footer {
+  margin-top: 3rem; /* Ensure good spacing above footer */
 }
 
 /* Responsive Styles */

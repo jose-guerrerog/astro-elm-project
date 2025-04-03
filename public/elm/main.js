@@ -5179,7 +5179,7 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 			['Quick access card slots', 'RFID protection', 'Premium, environmentally certified leather', '3 year warranty']),
 		id: 1,
 		images: _List_fromArray(
-			['/images/flip-case-brown.png']),
+			['/images/flip-case-blue.png']),
 		isInStock: true,
 		name: 'Flip Case',
 		price: 129.00,
@@ -5220,7 +5220,7 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 			['RFID protection', 'Passport pocket', 'Ticket and boarding pass section', 'SIM card storage', 'Micro travel pen included']),
 		id: 3,
 		images: _List_fromArray(
-			['/images/travel-wallet-brown.png']),
+			['/images/travel-wallet-green.png']),
 		isInStock: true,
 		name: 'Travel Wallet',
 		price: 199.00,
@@ -5228,11 +5228,16 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 		salePrice: $elm$core$Maybe$Nothing
 	}
 	]);
+var $author$project$ProductCard$init = function (product) {
+	return {currentImageIndex: 0, isHovered: false, isQuickViewOpen: false, product: product, selectedColorIndex: 0};
+};
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
 var $author$project$ProductGrid$init = function (windowWidth) {
+	var products = $author$project$ProductData$getWallets;
+	var productCards = A2($elm$core$List$map, $author$project$ProductCard$init, products);
 	return _Utils_Tuple2(
-		{products: $author$project$ProductData$getWallets, windowWidth: windowWidth},
+		{productCards: productCards, products: products, windowWidth: windowWidth},
 		$elm$core$Platform$Cmd$none);
 };
 var $elm$core$Platform$Cmd$map = _Platform_map;
@@ -5255,10 +5260,69 @@ var $author$project$Main$subscriptions = function (_v0) {
 var $author$project$ProductGrid$WindowResized = function (a) {
 	return {$: 'WindowResized', a: a};
 };
+var $elm$core$Debug$log = _Debug_log;
+var $author$project$ProductCard$update = F2(
+	function (msg, model) {
+		switch (msg.$) {
+			case 'MouseEnter':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{isHovered: true}),
+					$elm$core$Platform$Cmd$none);
+			case 'MouseLeave':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{isHovered: false}),
+					$elm$core$Platform$Cmd$none);
+			case 'QuickView':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{isQuickViewOpen: true}),
+					$elm$core$Platform$Cmd$none);
+			case 'CloseQuickView':
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{isQuickViewOpen: false}),
+					$elm$core$Platform$Cmd$none);
+			default:
+				var colorIndex = msg.a;
+				var _v1 = A2($elm$core$Debug$log, 'Color selected', colorIndex);
+				return _Utils_Tuple2(
+					_Utils_update(
+						model,
+						{selectedColorIndex: colorIndex}),
+					$elm$core$Platform$Cmd$none);
+		}
+	});
 var $author$project$ProductGrid$update = F2(
 	function (msg, model) {
 		if (msg.$ === 'ProductCardMsg') {
-			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+			var index = msg.a;
+			var cardMsg = msg.b;
+			var updateCard = F2(
+				function (i, card) {
+					if (_Utils_eq(i, index)) {
+						var _v2 = A2($author$project$ProductCard$update, cardMsg, card);
+						var updatedCard = _v2.a;
+						return updatedCard;
+					} else {
+						return card;
+					}
+				});
+			var updatedCards = A2($elm$core$List$indexedMap, updateCard, model.productCards);
+			var _v1 = A2(
+				$elm$core$Debug$log,
+				'Updating card ' + ($elm$core$String$fromInt(index) + ' with message'),
+				cardMsg);
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{productCards: updatedCards}),
+				$elm$core$Platform$Cmd$none);
 		} else {
 			var width = msg.a;
 			return _Utils_Tuple2(
@@ -5297,9 +5361,10 @@ var $author$project$Main$update = F2(
 	});
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
-var $author$project$ProductGrid$ProductCardMsg = function (a) {
-	return {$: 'ProductCardMsg', a: a};
-};
+var $author$project$ProductGrid$ProductCardMsg = F2(
+	function (a, b) {
+		return {$: 'ProductCardMsg', a: a, b: b};
+	});
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5310,9 +5375,6 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $author$project$ProductCard$init = function (product) {
-	return {currentImageIndex: 0, isHovered: false, isQuickViewOpen: false, product: product, selectedColorIndex: 0};
-};
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $author$project$ProductCard$MouseEnter = {$: 'MouseEnter'};
@@ -5366,6 +5428,10 @@ var $author$project$ProductCard$viewColorOptions = F2(
 				$elm$core$List$indexedMap,
 				F2(
 					function (index, color) {
+						var _v0 = A2(
+							$elm$core$Debug$log,
+							'Color option ' + $elm$core$String$fromInt(index),
+							color.name);
 						return A2(
 							$elm$html$Html$button,
 							_List_fromArray(
@@ -5432,28 +5498,22 @@ var $elm$core$Maybe$withDefault = F2(
 		}
 	});
 var $author$project$ProductCard$viewProductImage = function (model) {
-	var imageUrl = function () {
-		if (_Utils_cmp(
-			model.selectedColorIndex,
-			$elm$core$List$length(model.product.colorImages)) < 0) {
-			var _v0 = $elm$core$List$head(
-				A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorImages));
-			if (_v0.$ === 'Just') {
-				var img = _v0.a;
-				return img;
-			} else {
-				return A2(
-					$elm$core$Maybe$withDefault,
-					'',
-					$elm$core$List$head(model.product.images));
-			}
-		} else {
-			return A2(
-				$elm$core$Maybe$withDefault,
-				'',
-				$elm$core$List$head(model.product.images));
-		}
-	}();
+	var imageUrl = (_Utils_cmp(
+		model.selectedColorIndex,
+		$elm$core$List$length(model.product.colorImages)) < 0) ? A2(
+		$elm$core$Maybe$withDefault,
+		A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			$elm$core$List$head(model.product.images)),
+		$elm$core$List$head(
+			A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorImages))) : A2(
+		$elm$core$Maybe$withDefault,
+		'',
+		$elm$core$List$head(model.product.images));
+	var _v0 = A2($elm$core$Debug$log, 'Selected color index', model.selectedColorIndex);
+	var _v1 = A2($elm$core$Debug$log, 'Available color images', model.product.colorImages);
+	var _v2 = A2($elm$core$Debug$log, 'Using image URL', imageUrl);
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5490,6 +5550,19 @@ var $elm$html$Html$h2 = _VirtualDom_node('h2');
 var $elm$html$Html$h3 = _VirtualDom_node('h3');
 var $elm$html$Html$p = _VirtualDom_node('p');
 var $author$project$ProductCard$viewQuickViewModal = function (model) {
+	var imageUrl = (_Utils_cmp(
+		model.selectedColorIndex,
+		$elm$core$List$length(model.product.colorImages)) < 0) ? A2(
+		$elm$core$Maybe$withDefault,
+		A2(
+			$elm$core$Maybe$withDefault,
+			'',
+			$elm$core$List$head(model.product.images)),
+		$elm$core$List$head(
+			A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorImages))) : A2(
+		$elm$core$Maybe$withDefault,
+		'',
+		$elm$core$List$head(model.product.images));
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5537,29 +5610,7 @@ var $author$project$ProductCard$viewQuickViewModal = function (model) {
 										$elm$html$Html$img,
 										_List_fromArray(
 											[
-												$elm$html$Html$Attributes$src(
-												function () {
-													if (_Utils_cmp(
-														model.selectedColorIndex,
-														$elm$core$List$length(model.product.colorImages)) < 0) {
-														var _v0 = $elm$core$List$head(
-															A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorImages));
-														if (_v0.$ === 'Just') {
-															var img = _v0.a;
-															return img;
-														} else {
-															return A2(
-																$elm$core$Maybe$withDefault,
-																'',
-																$elm$core$List$head(model.product.images));
-														}
-													} else {
-														return A2(
-															$elm$core$Maybe$withDefault,
-															'',
-															$elm$core$List$head(model.product.images));
-													}
-												}()),
+												$elm$html$Html$Attributes$src(imageUrl),
 												$elm$html$Html$Attributes$alt(model.product.name),
 												$elm$html$Html$Attributes$class('modal-image')
 											]),
@@ -5745,7 +5796,7 @@ var $author$project$ProductCard$view = function (model) {
 			]));
 };
 var $author$project$ProductGrid$view = function (model) {
-	var columns = (model.windowWidth < 640) ? 1 : ((model.windowWidth < 1024) ? 2 : ((model.windowWidth < 1280) ? 3 : 4));
+	var columns = (model.windowWidth < 640) ? 1 : ((model.windowWidth < 1024) ? 2 : 3);
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5765,17 +5816,17 @@ var $author$project$ProductGrid$view = function (model) {
 						'repeat(' + ($elm$core$String$fromInt(columns) + ', 1fr)'))
 					]),
 				A2(
-					$elm$core$List$map,
-					function (product) {
-						return A2(
-							$elm$html$Html$map,
-							function (msg) {
-								return $author$project$ProductGrid$ProductCardMsg(msg);
-							},
-							$author$project$ProductCard$view(
-								$author$project$ProductCard$init(product)));
-					},
-					model.products))
+					$elm$core$List$indexedMap,
+					F2(
+						function (index, cardModel) {
+							return A2(
+								$elm$html$Html$map,
+								function (msg) {
+									return A2($author$project$ProductGrid$ProductCardMsg, index, msg);
+								},
+								$author$project$ProductCard$view(cardModel));
+						}),
+					model.productCards))
 			]));
 };
 var $author$project$Main$view = function (model) {

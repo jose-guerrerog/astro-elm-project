@@ -13,13 +13,19 @@ import ProductData exposing (Product, getWallets)
 type alias Model =
     { products : List Product
     , windowWidth : Int
+    , productCards : List (ProductCard.Model)
     }
 
 
 init : Int -> ( Model, Cmd Msg )
 init windowWidth =
-    ( { products = getWallets
+    let
+        products = getWallets
+        productCards = List.map ProductCard.init products
+    in
+    ( { products = products
       , windowWidth = windowWidth
+      , productCards = productCards
       }
     , Cmd.none
     )
@@ -28,16 +34,32 @@ init windowWidth =
 -- UPDATE
 
 type Msg
-    = ProductCardMsg ProductCard.Msg
+    = ProductCardMsg Int ProductCard.Msg
     | WindowResized Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
-        ProductCardMsg _ ->
-            -- Forward messages to product cards if needed
-            ( model, Cmd.none )
+        ProductCardMsg index cardMsg ->
+            let
+                -- Log received message for debugging
+                _ = Debug.log ("Updating card " ++ String.fromInt index ++ " with message") cardMsg
+                
+                -- Update the specific card that received the message
+                updateCard i card =
+                    if i == index then
+                        let
+                            (updatedCard, _) = ProductCard.update cardMsg card
+                        in
+                        updatedCard
+                    else
+                        card
+                        
+                updatedCards = 
+                    List.indexedMap updateCard model.productCards
+            in
+            ( { model | productCards = updatedCards }, Cmd.none )
 
         WindowResized width ->
             ( { model | windowWidth = width }, Cmd.none )
@@ -54,21 +76,19 @@ view model =
                 1
             else if model.windowWidth < 1024 then
                 2
-            else if model.windowWidth < 1280 then
-                3
             else
-                4
+                3
     in
     div [ class "product-grid-container" ]
         [ div
             [ class "product-grid"
             , style "grid-template-columns" ("repeat(" ++ String.fromInt columns ++ ", 1fr)")
             ]
-            (List.map
-                (\product ->
-                    Html.map (\msg -> ProductCardMsg msg)
-                        (ProductCard.view (ProductCard.init product))
+            (List.indexedMap
+                (\index cardModel ->
+                    Html.map (\msg -> ProductCardMsg index msg)
+                        (ProductCard.view cardModel)
                 )
-                model.products
+                model.productCards
             )
         ]
