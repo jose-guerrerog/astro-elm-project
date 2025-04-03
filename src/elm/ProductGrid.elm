@@ -66,7 +66,7 @@ view model =
             ]
             (List.map
                 (\product ->
-                    Html.map (\_ -> ProductCardMsg (ProductCard.QuickView product.id))
+                    Html.map (\msg -> ProductCardMsg msg)
                         (ProductCard.view (ProductCard.init product))
                 )
                 model.products

@@ -13,6 +13,7 @@ type alias Model =
     , isHovered : Bool
     , currentImageIndex : Int
     , isQuickViewOpen : Bool
+    , selectedColorIndex : Int
     }
 
 
@@ -22,6 +23,7 @@ init product =
     , isHovered = False
     , currentImageIndex = 0
     , isQuickViewOpen = False
+    , selectedColorIndex = 0
     }
 
 
@@ -32,7 +34,7 @@ type Msg
     | MouseLeave
     | QuickView Int
     | CloseQuickView
-    | SelectColor String
+    | SelectColor Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -50,9 +52,8 @@ update msg model =
         CloseQuickView ->
             ( { model | isQuickViewOpen = False }, Cmd.none )
             
-        SelectColor _ ->
-            -- In a real app, we would update the selected color here
-            ( model, Cmd.none )
+        SelectColor colorIndex ->
+            ( { model | selectedColorIndex = colorIndex }, Cmd.none )
 
 
 -- VIEW
@@ -72,7 +73,7 @@ view model =
                 ]
             , div [ class "product-price" ] [ text ("$" ++ String.fromFloat model.product.price) ]
             , div [ class "product-description" ] [ text model.product.description ]
-            , viewColorOptions model.product
+            , viewColorOptions model model.product
             ]
         , if model.isQuickViewOpen then
             viewQuickViewModal model
@@ -84,12 +85,20 @@ view model =
 viewProductImage : Model -> Html Msg
 viewProductImage model =
     let
-        currentImage =
-            List.head model.product.images |> Maybe.withDefault ""
+        imageUrl =
+            if model.selectedColorIndex < List.length model.product.colorImages then
+                case List.drop model.selectedColorIndex model.product.colorImages |> List.head of
+                    Just img ->
+                        img
+
+                    Nothing ->
+                        List.head model.product.images |> Maybe.withDefault ""
+            else
+                List.head model.product.images |> Maybe.withDefault ""
     in
     div [ class "product-image-container" ]
         [ img
-            [ src currentImage
+            [ src imageUrl
             , alt model.product.name
             , class "product-image"
             ]
@@ -105,16 +114,21 @@ viewProductImage model =
         ]
 
 
-viewColorOptions : Product -> Html Msg
-viewColorOptions product =
+viewColorOptions : Model -> Product -> Html Msg
+viewColorOptions model product =
     div [ class "color-options" ]
-        (List.map
-            (\color ->
+        (List.indexedMap
+            (\index color ->
                 button
-                    [ class "color-option"
+                    [ class 
+                        (if index == model.selectedColorIndex then
+                            "color-option color-option-selected"
+                         else
+                            "color-option"
+                        )
                     , style "background-color" color.hex
                     , title color.name
-                    , onClick (SelectColor color.name)
+                    , onClick (SelectColor index)
                     ]
                     []
             )
@@ -130,7 +144,17 @@ viewQuickViewModal model =
             , div [ class "modal-content" ]
                 [ div [ class "modal-image-container" ]
                     [ img
-                        [ src (List.head model.product.images |> Maybe.withDefault "")
+                        [ src 
+                            (if model.selectedColorIndex < List.length model.product.colorImages then
+                                case List.drop model.selectedColorIndex model.product.colorImages |> List.head of
+                                    Just img ->
+                                        img
+
+                                    Nothing ->
+                                        List.head model.product.images |> Maybe.withDefault ""
+                            else
+                                List.head model.product.images |> Maybe.withDefault ""
+                            )
                         , alt model.product.name
                         , class "modal-image"
                         ]
@@ -144,12 +168,18 @@ viewQuickViewModal model =
                     , div [ class "modal-colors-section" ]
                         [ h3 [] [ text "Available Colors" ]
                         , div [ class "modal-color-options" ]
-                            (List.map
-                                (\color ->
-                                    div
-                                        [ class "modal-color-option"
+                            (List.indexedMap
+                                (\index color ->
+                                    button
+                                        [ class 
+                                            (if index == model.selectedColorIndex then
+                                                "modal-color-option modal-color-selected"
+                                             else
+                                                "modal-color-option"
+                                            )
                                         , style "background-color" color.hex
                                         , title color.name
+                                        , onClick (SelectColor index)
                                         ]
                                         []
                                 )

@@ -5166,21 +5166,20 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 	[
 		{
 		category: 'RFID safe',
+		colorImages: _List_fromArray(
+			['/images/flip-case-blue.png', '/images/flip-case-green.png', '/images/flip-case-brown.png']),
 		colors: _List_fromArray(
 			[
-				{hex: '#000000', name: 'Black'},
-				{hex: '#000080', name: 'Navy'},
 				{hex: '#3F5D7D', name: 'Blue'},
 				{hex: '#3A5F41', name: 'Green'},
-				{hex: '#A05B3B', name: 'Brown'},
-				{hex: '#5D3D32', name: 'Cocoa'}
+				{hex: '#A05B3B', name: 'Brown'}
 			]),
 		description: 'Card wallet for 6 – 8 cards, folded bills',
 		features: _List_fromArray(
 			['Quick access card slots', 'RFID protection', 'Premium, environmentally certified leather', '3 year warranty']),
 		id: 1,
 		images: _List_fromArray(
-			['/images/flip-case-brown.png', '/images/flip-case-blue.png', '/images/flip-case-gray.png']),
+			['/images/flip-case-brown.png']),
 		isInStock: true,
 		name: 'Flip Case',
 		price: 129.00,
@@ -5189,6 +5188,8 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 	},
 		{
 		category: 'Carryology Essentials Edition',
+		colorImages: _List_fromArray(
+			['/images/slim-sleeve-black.png']),
 		colors: _List_fromArray(
 			[
 				{hex: '#000000', name: 'Black'}
@@ -5207,20 +5208,19 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 	},
 		{
 		category: 'RFID safe',
+		colorImages: _List_fromArray(
+			['/images/travel-wallet-green.png', '/images/travel-wallet-brown.png']),
 		colors: _List_fromArray(
 			[
-				{hex: '#000000', name: 'Black'},
-				{hex: '#000080', name: 'Navy'},
 				{hex: '#3A5F41', name: 'Green'},
-				{hex: '#A05B3B', name: 'Brown'},
-				{hex: '#A15E2C', name: 'Caramel'}
+				{hex: '#A05B3B', name: 'Brown'}
 			]),
 		description: 'Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets',
 		features: _List_fromArray(
 			['RFID protection', 'Passport pocket', 'Ticket and boarding pass section', 'SIM card storage', 'Micro travel pen included']),
 		id: 3,
 		images: _List_fromArray(
-			['/images/travel-wallet-brown.png', '/images/travel-wallet-gray.png']),
+			['/images/travel-wallet-brown.png']),
 		isInStock: true,
 		name: 'Travel Wallet',
 		price: 199.00,
@@ -5300,9 +5300,6 @@ var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
 var $author$project$ProductGrid$ProductCardMsg = function (a) {
 	return {$: 'ProductCardMsg', a: a};
 };
-var $author$project$ProductCard$QuickView = function (a) {
-	return {$: 'QuickView', a: a};
-};
 var $elm$json$Json$Encode$string = _Json_wrap;
 var $elm$html$Html$Attributes$stringProperty = F2(
 	function (key, string) {
@@ -5314,7 +5311,7 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
 var $author$project$ProductCard$init = function (product) {
-	return {currentImageIndex: 0, isHovered: false, isQuickViewOpen: false, product: product};
+	return {currentImageIndex: 0, isHovered: false, isQuickViewOpen: false, product: product, selectedColorIndex: 0};
 };
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
@@ -5357,31 +5354,58 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		$elm$json$Json$Decode$succeed(msg));
 };
 var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
-var $author$project$ProductCard$viewColorOptions = function (product) {
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('color-options')
-			]),
-		A2(
-			$elm$core$List$map,
-			function (color) {
-				return A2(
-					$elm$html$Html$button,
-					_List_fromArray(
-						[
-							$elm$html$Html$Attributes$class('color-option'),
-							A2($elm$html$Html$Attributes$style, 'background-color', color.hex),
-							$elm$html$Html$Attributes$title(color.name),
-							$elm$html$Html$Events$onClick(
-							$author$project$ProductCard$SelectColor(color.name))
-						]),
-					_List_Nil);
-			},
-			product.colors));
+var $author$project$ProductCard$viewColorOptions = F2(
+	function (model, product) {
+		return A2(
+			$elm$html$Html$div,
+			_List_fromArray(
+				[
+					$elm$html$Html$Attributes$class('color-options')
+				]),
+			A2(
+				$elm$core$List$indexedMap,
+				F2(
+					function (index, color) {
+						return A2(
+							$elm$html$Html$button,
+							_List_fromArray(
+								[
+									$elm$html$Html$Attributes$class(
+									_Utils_eq(index, model.selectedColorIndex) ? 'color-option color-option-selected' : 'color-option'),
+									A2($elm$html$Html$Attributes$style, 'background-color', color.hex),
+									$elm$html$Html$Attributes$title(color.name),
+									$elm$html$Html$Events$onClick(
+									$author$project$ProductCard$SelectColor(index))
+								]),
+							_List_Nil);
+					}),
+				product.colors));
+	});
+var $author$project$ProductCard$QuickView = function (a) {
+	return {$: 'QuickView', a: a};
 };
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
+var $elm$core$List$drop = F2(
+	function (n, list) {
+		drop:
+		while (true) {
+			if (n <= 0) {
+				return list;
+			} else {
+				if (!list.b) {
+					return list;
+				} else {
+					var x = list.a;
+					var xs = list.b;
+					var $temp$n = n - 1,
+						$temp$list = xs;
+					n = $temp$n;
+					list = $temp$list;
+					continue drop;
+				}
+			}
+		}
+	});
 var $elm$core$List$head = function (list) {
 	if (list.b) {
 		var x = list.a;
@@ -5408,10 +5432,28 @@ var $elm$core$Maybe$withDefault = F2(
 		}
 	});
 var $author$project$ProductCard$viewProductImage = function (model) {
-	var currentImage = A2(
-		$elm$core$Maybe$withDefault,
-		'',
-		$elm$core$List$head(model.product.images));
+	var imageUrl = function () {
+		if (_Utils_cmp(
+			model.selectedColorIndex,
+			$elm$core$List$length(model.product.colorImages)) < 0) {
+			var _v0 = $elm$core$List$head(
+				A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorImages));
+			if (_v0.$ === 'Just') {
+				var img = _v0.a;
+				return img;
+			} else {
+				return A2(
+					$elm$core$Maybe$withDefault,
+					'',
+					$elm$core$List$head(model.product.images));
+			}
+		} else {
+			return A2(
+				$elm$core$Maybe$withDefault,
+				'',
+				$elm$core$List$head(model.product.images));
+		}
+	}();
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5424,7 +5466,7 @@ var $author$project$ProductCard$viewProductImage = function (model) {
 				$elm$html$Html$img,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$src(currentImage),
+						$elm$html$Html$Attributes$src(imageUrl),
 						$elm$html$Html$Attributes$alt(model.product.name),
 						$elm$html$Html$Attributes$class('product-image')
 					]),
@@ -5496,10 +5538,28 @@ var $author$project$ProductCard$viewQuickViewModal = function (model) {
 										_List_fromArray(
 											[
 												$elm$html$Html$Attributes$src(
-												A2(
-													$elm$core$Maybe$withDefault,
-													'',
-													$elm$core$List$head(model.product.images))),
+												function () {
+													if (_Utils_cmp(
+														model.selectedColorIndex,
+														$elm$core$List$length(model.product.colorImages)) < 0) {
+														var _v0 = $elm$core$List$head(
+															A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorImages));
+														if (_v0.$ === 'Just') {
+															var img = _v0.a;
+															return img;
+														} else {
+															return A2(
+																$elm$core$Maybe$withDefault,
+																'',
+																$elm$core$List$head(model.product.images));
+														}
+													} else {
+														return A2(
+															$elm$core$Maybe$withDefault,
+															'',
+															$elm$core$List$head(model.product.images));
+													}
+												}()),
 												$elm$html$Html$Attributes$alt(model.product.name),
 												$elm$html$Html$Attributes$class('modal-image')
 											]),
@@ -5576,18 +5636,22 @@ var $author$project$ProductCard$viewQuickViewModal = function (model) {
 														$elm$html$Html$Attributes$class('modal-color-options')
 													]),
 												A2(
-													$elm$core$List$map,
-													function (color) {
-														return A2(
-															$elm$html$Html$div,
-															_List_fromArray(
-																[
-																	$elm$html$Html$Attributes$class('modal-color-option'),
-																	A2($elm$html$Html$Attributes$style, 'background-color', color.hex),
-																	$elm$html$Html$Attributes$title(color.name)
-																]),
-															_List_Nil);
-													},
+													$elm$core$List$indexedMap,
+													F2(
+														function (index, color) {
+															return A2(
+																$elm$html$Html$button,
+																_List_fromArray(
+																	[
+																		$elm$html$Html$Attributes$class(
+																		_Utils_eq(index, model.selectedColorIndex) ? 'modal-color-option modal-color-selected' : 'modal-color-option'),
+																		A2($elm$html$Html$Attributes$style, 'background-color', color.hex),
+																		$elm$html$Html$Attributes$title(color.name),
+																		$elm$html$Html$Events$onClick(
+																		$author$project$ProductCard$SelectColor(index))
+																	]),
+																_List_Nil);
+														}),
 													model.product.colors))
 											])),
 										A2(
@@ -5675,7 +5739,7 @@ var $author$project$ProductCard$view = function (model) {
 							[
 								$elm$html$Html$text(model.product.description)
 							])),
-						$author$project$ProductCard$viewColorOptions(model.product)
+						A2($author$project$ProductCard$viewColorOptions, model, model.product)
 					])),
 				model.isQuickViewOpen ? $author$project$ProductCard$viewQuickViewModal(model) : $elm$html$Html$text('')
 			]));
@@ -5705,9 +5769,8 @@ var $author$project$ProductGrid$view = function (model) {
 					function (product) {
 						return A2(
 							$elm$html$Html$map,
-							function (_v0) {
-								return $author$project$ProductGrid$ProductCardMsg(
-									$author$project$ProductCard$QuickView(product.id));
+							function (msg) {
+								return $author$project$ProductGrid$ProductCardMsg(msg);
 							},
 							$author$project$ProductCard$view(
 								$author$project$ProductCard$init(product)));

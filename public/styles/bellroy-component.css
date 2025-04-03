@@ -64,7 +64,7 @@ body {
 .product-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 0;
+  gap: 20px; /* Added spacing between cards */
   max-width: 1200px;
   margin: 0 auto;
   align-items: start;
@@ -78,6 +78,7 @@ body {
   padding: 1.5rem;
   background-color: var(--card-background);
   height: 100%;
+  border-radius: 4px; /* Optional: adds slight rounding to card edges */
 }
 
 /* Product Image */
@@ -90,12 +91,14 @@ body {
   justify-content: center;
   align-items: center;
   background-color: var(--card-background);
+  transition: all var(--transition-speed);
 }
 
 .product-image {
   max-width: 85%;
   max-height: 85%;
   object-fit: contain;
+  transition: all var(--transition-speed);
 }
 
 /* Show Inside Button */
@@ -176,13 +179,18 @@ body {
   border-radius: 50%;
   border: none;
   cursor: pointer;
-  transition: transform var(--transition-speed);
+  transition: all var(--transition-speed);
   box-shadow: 0 0 0 1px rgba(0,0,0,0.1);
 }
 
 .color-option:hover {
   transform: scale(1.1);
   box-shadow: 0 0 0 1px rgba(0,0,0,0.3);
+}
+
+.color-option-selected {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--primary-color);
 }
 
 /* Quick View Modal */
@@ -296,6 +304,11 @@ body {
   border-radius: 50%;
   border: 1px solid var(--border-color);
   cursor: pointer;
+}
+
+.modal-color-selected {
+  transform: scale(1.1);
+  box-shadow: 0 0 0 2px var(--primary-color);
 }
 
 .add-to-cart-btn {

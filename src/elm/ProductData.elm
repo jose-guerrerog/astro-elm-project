@@ -15,6 +15,7 @@ type alias Product =
     , salePrice : Maybe Float
     , description : String
     , images : List String
+    , colorImages : List String  -- Images for different color variants
     , colors : List Color
     , features : List String
     , isInStock : Bool
@@ -31,17 +32,16 @@ getWallets =
       , salePrice = Nothing
       , description = "Card wallet for 6 – 8 cards, folded bills"
       , images =
-            [ "/images/flip-case-brown.png"
-            , "/images/flip-case-blue.png"
-            , "/images/flip-case-gray.png"
+            [ "/images/flip-case-brown.png" ]
+      , colorImages =
+            [ "/images/flip-case-blue.png"   -- Blue
+            , "/images/flip-case-green.png"  -- Green
+            , "/images/flip-case-brown.png"  -- Brown
             ]
       , colors =
-            [ { name = "Black", hex = "#000000" }
-            , { name = "Navy", hex = "#000080" }
-            , { name = "Blue", hex = "#3F5D7D" }
+            [ { name = "Blue", hex = "#3F5D7D" }
             , { name = "Green", hex = "#3A5F41" }
             , { name = "Brown", hex = "#A05B3B" }
-            , { name = "Cocoa", hex = "#5D3D32" }
             ]
       , features =
             [ "Quick access card slots"
@@ -59,9 +59,9 @@ getWallets =
       , salePrice = Nothing
       , description = "Billfold for 5 – 11 cards, folded bills"
       , images =
-            [
-             "/images/slim-sleeve-black.png"
-            ]
+            [ "/images/slim-sleeve-black.png" ]
+      , colorImages =
+            [ "/images/slim-sleeve-black.png" ]
       , colors =
             [ { name = "Black", hex = "#000000" }
             ]
@@ -81,15 +81,14 @@ getWallets =
       , salePrice = Nothing
       , description = "Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets"
       , images =
-            [ "/images/travel-wallet-brown.png"
-            , "/images/travel-wallet-gray.png"
+            [ "/images/travel-wallet-brown.png" ]
+      , colorImages =
+            [ "/images/travel-wallet-green.png"  -- Green
+            , "/images/travel-wallet-brown.png"  -- Brown
             ]
       , colors =
-            [ { name = "Black", hex = "#000000" }
-            , { name = "Navy", hex = "#000080" }
-            , { name = "Green", hex = "#3A5F41" }
+            [ { name = "Green", hex = "#3A5F41" }
             , { name = "Brown", hex = "#A05B3B" }
-            , { name = "Caramel", hex = "#A15E2C" }
             ]
       , features =
             [ "RFID protection"
