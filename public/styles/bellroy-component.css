@@ -182,23 +182,28 @@ body {
 }
 
 .color-option {
-  width: 20px;  /* Smaller button size to match design */
-  height: 20px;  /* Smaller button size to match design */
+  width: 20px;
+  height: 20px;
   border-radius: 50%;
   border: none;
   cursor: pointer;
   transition: all var(--transition-speed);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.15);  /* Subtler outline */
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.15);
+  position: relative;
 }
 
 .color-option:hover {
-  transform: scale(1.1);
-  box-shadow: 0 0 0 1px rgba(0,0,0,0.4);
+  box-shadow: 0 0 0 1px rgba(0,0,0,0.4);  /* Slightly darker outline on hover */
 }
 
 .color-option-selected {
-  transform: scale(1.1);
-  box-shadow: 0 0 0 1px #000;  /* Black outline for selected color */
+  box-shadow: 0 0 0 2px white, 0 0 0 3px black;
+  position: relative;
+  z-index: 2;
+  /* Create additional space by reducing the visible size of the button */
+  width: 16px;
+  height: 16px;
+  margin: 2px; /* Adds space around the button to maintain the total size */
 }
 
 /* Quick View Modal */
@@ -315,8 +320,8 @@ body {
 }
 
 .modal-color-selected {
-  transform: scale(1.1);
-  box-shadow: 0 0 0 1px #000;  /* Black outline for selected color */
+  box-shadow: 0 0 0 2px white, 0 0 0 3px #000;  /* Match main product card selected style */
+  z-index: 2;
 }
 
 .add-to-cart-btn {
