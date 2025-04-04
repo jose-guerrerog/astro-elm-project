@@ -5780,6 +5780,7 @@ var $author$project$ProductCard$view = function (model) {
 								$elm$html$Html$text(
 								'$' + $elm$core$String$fromFloat(model.product.price))
 							])),
+						A2($author$project$ProductCard$viewColorOptions, model, model.product),
 						A2(
 						$elm$html$Html$div,
 						_List_fromArray(
@@ -5789,8 +5790,7 @@ var $author$project$ProductCard$view = function (model) {
 						_List_fromArray(
 							[
 								$elm$html$Html$text(model.product.description)
-							])),
-						A2($author$project$ProductCard$viewColorOptions, model, model.product)
+							]))
 					])),
 				model.isQuickViewOpen ? $author$project$ProductCard$viewQuickViewModal(model) : $elm$html$Html$text('')
 			]));

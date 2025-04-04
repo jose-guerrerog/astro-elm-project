@@ -77,8 +77,8 @@ view model =
                 , div [ class "product-category" ] [ text ("– " ++ model.product.category) ]
                 ]
             , div [ class "product-price" ] [ text ("$" ++ String.fromFloat model.product.price) ]
-            , div [ class "product-description" ] [ text model.product.description ]
             , viewColorOptions model model.product
+            , div [ class "product-description" ] [ text model.product.description ]
             ]
         , if model.isQuickViewOpen then
             viewQuickViewModal model
