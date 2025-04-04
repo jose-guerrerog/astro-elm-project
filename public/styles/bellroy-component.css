@@ -76,10 +76,10 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  padding: 1.5rem;
-  padding-bottom: 2.5rem; /* Added more padding at bottom */
+  padding: 0; /* Remove all padding from the card */
   background-color: var(--card-background);
   height: 100%;
+  overflow: visible; /* Allow button to be visible */
   border-radius: 4px; /* Optional: adds slight rounding to card edges */
 }
 
@@ -87,8 +87,9 @@ body {
 .product-image-container {
   position: relative;
   overflow: hidden;
-  margin-bottom: 1.5rem;
-  height: 300px;
+  margin: 0; /* Remove margins */
+  padding: 1.5rem; /* Add padding inside container */
+  min-height: 300px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -117,8 +118,12 @@ body {
   cursor: pointer;
   letter-spacing: 0.5px;
   transition: background-color var(--transition-speed);
-  z-index: 3;
+  z-index: 10; /* Higher z-index to ensure it's on top */
   text-transform: uppercase;
+  margin: 0;
+  border-radius: 0;
+  box-shadow: none;
+  outline: none;
 }
 
 .show-inside-btn:hover {
@@ -130,6 +135,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  padding: 0 1.5rem 2.5rem 1.5rem; /* Add padding to info section */
 }
 
 /* Product Title */
