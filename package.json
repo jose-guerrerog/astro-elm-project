@@ -4,7 +4,8 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "npx elm make src/elm/*.elm --output=public/elm.js && astro build && astro build",
+    "build:elm": "elm make src/elm/Main.elm --output=public/elm.js || true",
+    "build": "npm run build:elm && astro build",
     "preview": "astro preview",
     "astro": "astro",
     "elm:build": "elm make src/elm/Main.elm --output=public/elm/main.js",
