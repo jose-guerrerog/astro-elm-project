@@ -5321,9 +5321,6 @@ var $author$project$Main$init = function (_v0) {
 };
 var $elm$core$Platform$Sub$batch = _Platform_batch;
 var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
-var $author$project$Main$subscriptions = function (_v0) {
-	return $elm$core$Platform$Sub$none;
-};
 var $elm$core$Bitwise$and = _Bitwise_and;
 var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
 var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
@@ -5437,22 +5434,20 @@ var $author$project$ProductGrid$update = F2(
 	function (msg, model) {
 		var index = msg.a;
 		var cardMsg = msg.b;
-		var maybeCard = A2($elm$core$Array$get, index, model.productCards);
-		var updatedCards = function () {
-			if (maybeCard.$ === 'Just') {
-				var card = maybeCard.a;
-				var _v2 = A2($author$project$ProductCard$update, cardMsg, card);
-				var updatedCard = _v2.a;
-				return A3($elm$core$Array$set, index, updatedCard, model.productCards);
-			} else {
-				return model.productCards;
-			}
-		}();
-		return _Utils_Tuple2(
-			_Utils_update(
-				model,
-				{productCards: updatedCards}),
-			$elm$core$Platform$Cmd$none);
+		var _v1 = A2($elm$core$Array$get, index, model.productCards);
+		if (_v1.$ === 'Just') {
+			var card = _v1.a;
+			var _v2 = A2($author$project$ProductCard$update, cardMsg, card);
+			var updatedCard = _v2.a;
+			var updatedCards = A3($elm$core$Array$set, index, updatedCard, model.productCards);
+			return _Utils_Tuple2(
+				_Utils_update(
+					model,
+					{productCards: updatedCards}),
+				$elm$core$Platform$Cmd$none);
+		} else {
+			return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
+		}
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
@@ -5759,9 +5754,7 @@ var $author$project$ProductGrid$view = function (model) {
 						var cardModel = _v0.b;
 						return A2(
 							$elm$html$Html$map,
-							function (msg) {
-								return A2($author$project$ProductGrid$ProductCardMsg, index, msg);
-							},
+							$author$project$ProductGrid$ProductCardMsg(index),
 							$author$project$ProductCard$view(cardModel));
 					},
 					$elm$core$Array$toIndexedList(model.productCards)))
@@ -5774,6 +5767,13 @@ var $author$project$Main$view = function (model) {
 		$author$project$ProductGrid$view(model.productGrid));
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
-	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
+	{
+		init: $author$project$Main$init,
+		subscriptions: function (_v0) {
+			return $elm$core$Platform$Sub$none;
+		},
+		update: $author$project$Main$update,
+		view: $author$project$Main$view
+	});
 _Platform_export({'Main':{'init':$author$project$Main$main(
 	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));

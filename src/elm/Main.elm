@@ -13,7 +13,7 @@ main =
         { init = init
         , view = view
         , update = update
-        , subscriptions = subscriptions
+        , subscriptions = \_ -> Sub.none  -- Inline the empty subscription
         }
 
 
@@ -52,13 +52,6 @@ update msg model =
             ( { model | productGrid = updatedProductGrid }
             , Cmd.map ProductGridMsg productGridCmd
             )
-
-
--- SUBSCRIPTIONS
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none
 
 
 -- VIEW

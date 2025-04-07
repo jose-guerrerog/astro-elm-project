@@ -1,9 +1,8 @@
-module ProductGrid exposing (Model, Msg(..), init, update, view, subscriptions)
+module ProductGrid exposing (Model, Msg(..), init, update, view)
 
 import Array exposing (Array)
 import Html exposing (..)
 import Html.Attributes exposing (..)
-import Html.Events exposing (onClick)
 import ProductCard
 import ProductData exposing (Product, getWallets)
 
@@ -39,27 +38,16 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         ProductCardMsg index cardMsg ->
-            let
-                maybeCard = Array.get index model.productCards
-                updatedCards = 
-                    case maybeCard of
-                        Just card ->
-                            let
-                                (updatedCard, _) = ProductCard.update cardMsg card
-                            in
-                            Array.set index updatedCard model.productCards
-                        
-                        Nothing ->
-                            model.productCards
-            in
-            ( { model | productCards = updatedCards }, Cmd.none )
-
-
--- SUBSCRIPTIONS
-
-subscriptions : Model -> Sub Msg
-subscriptions _ =
-    Sub.none  -- No subscriptions needed
+            case Array.get index model.productCards of
+                Just card ->
+                    let
+                        (updatedCard, _) = ProductCard.update cardMsg card
+                        updatedCards = Array.set index updatedCard model.productCards
+                    in
+                    ( { model | productCards = updatedCards }, Cmd.none )
+                
+                Nothing ->
+                    ( model, Cmd.none )
 
 
 -- VIEW
@@ -68,10 +56,10 @@ view : Model -> Html Msg
 view model =
     div [ class "product-grid-container" ]
         [ div
-            [ class "product-grid" ]  -- CSS handles responsiveness
+            [ class "product-grid" ]
             (Array.toIndexedList model.productCards
                 |> List.map (\(index, cardModel) ->
-                    Html.map (\msg -> ProductCardMsg index msg)
+                    Html.map (ProductCardMsg index)
                         (ProductCard.view cardModel)
                 )
             )
