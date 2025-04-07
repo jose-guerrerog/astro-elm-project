@@ -2,7 +2,7 @@ module ProductCardTest exposing (suite)
 
 import Expect
 import ProductCard exposing (Model, Msg(..), init, update, view)
-import ProductData exposing (Product, getWallets)
+import ProductData exposing (Product, ColorOption, getWallets)
 import Test exposing (Test, describe, test)
 import Test.Html.Query as Query
 import Test.Html.Selector as Selector
@@ -18,11 +18,8 @@ testProduct =
             , category = ""
             , price = 0
             , description = ""
-            , images = []
-            , colorImages = []
-            , colors = []
+            , colorOptions = []
             , features = []
-            , isInStock = False
             , rating = 0
             }
 
@@ -108,11 +105,11 @@ suite =
                         |> Query.has [ Selector.text ("$" ++ String.fromFloat testProduct.price) ]
             , test "renders color options if available" <|
                 \_ ->
-                    if List.length testProduct.colors > 0 then
+                    if List.length testProduct.colorOptions > 0 then
                         view initialModel
                             |> Query.fromHtml
                             |> Query.findAll [ Selector.class "color-option" ]
-                            |> Query.count (Expect.equal (List.length testProduct.colors))
+                            |> Query.count (Expect.equal (List.length testProduct.colorOptions))
                     else
                         Expect.pass
             , test "renders the product description" <|

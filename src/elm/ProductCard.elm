@@ -3,7 +3,7 @@ module ProductCard exposing (Model, Msg(..), init, update, view)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onMouseEnter, onMouseLeave)
-import ProductData exposing (Product)
+import ProductData exposing (Product, ColorOption)
 
 
 -- MODEL
@@ -60,7 +60,7 @@ view model =
                 , div [ class "product-category" ] [ text ("– " ++ model.product.category) ]
                 ]
             , div [ class "product-price" ] [ text ("$" ++ String.fromFloat model.product.price) ]
-            , viewColorOptions model model.product
+            , viewColorOptions model
             , div [ class "product-description" ] [ text model.product.description ]
             ]
         ]
@@ -70,13 +70,18 @@ viewProductImage : Model -> Html Msg
 viewProductImage model =
     let
         imageUrl =
-            if model.selectedColorIndex < List.length model.product.colorImages then
-                Maybe.withDefault 
-                    (List.head model.product.images |> Maybe.withDefault "") 
-                    (List.head (List.drop model.selectedColorIndex model.product.colorImages))
-            else
-                -- Fallback to first image if index is out of bounds
-                List.head model.product.images |> Maybe.withDefault ""
+            case List.drop model.selectedColorIndex model.product.colorOptions of
+                colorOption :: _ ->
+                    colorOption.imageUrl
+                
+                [] ->
+                    -- Fallback to first color option's image if index is out of bounds
+                    case List.head model.product.colorOptions of
+                        Just firstOption ->
+                            firstOption.imageUrl
+                        
+                        Nothing ->
+                            "" -- No color options available
     in
     div [ class "product-image-container" ]
         [ img
@@ -94,11 +99,11 @@ viewProductImage model =
         ]
 
 
-viewColorOptions : Model -> Product -> Html Msg
-viewColorOptions model product =
+viewColorOptions : Model -> Html Msg
+viewColorOptions model =
     div [ class "color-options" ]
         (List.indexedMap
-            (\index color ->
+            (\index colorOption ->
                 button
                     [ class 
                         (if index == model.selectedColorIndex then
@@ -106,11 +111,11 @@ viewColorOptions model product =
                          else
                             "color-option"
                         )
-                    , style "background-color" color.hex
-                    , title color.name
+                    , style "background-color" colorOption.hex
+                    , title colorOption.name
                     , onClick (SelectColor index)
                     ]
                     []
             )
-            product.colors
+            model.product.colorOptions
         )

@@ -1,9 +1,10 @@
-module ProductData exposing (Color, Product, getWallets)
+module ProductData exposing (ColorOption, Product, getWallets)
 
 
-type alias Color =
+type alias ColorOption =
     { name : String
     , hex : String
+    , imageUrl : String
     }
 
 
@@ -13,11 +14,8 @@ type alias Product =
     , category : String
     , price : Float
     , description : String
-    , images : List String
-    , colorImages : List String
-    , colors : List Color
+    , colorOptions : List ColorOption
     , features : List String
-    , isInStock : Bool
     , rating : Float
     }
 
@@ -29,17 +27,10 @@ getWallets =
       , category = "RFID safe"
       , price = 129.00
       , description = "Card wallet for 6 – 8 cards, folded bills"
-      , images =
-            [ "/images/flip-case-blue.png" ]  -- Default image
-      , colorImages =
-            [ "/images/flip-case-blue.png"
-            , "/images/flip-case-green.png"
-            , "/images/flip-case-brown.png"
-            ]
-      , colors =
-            [ { name = "Blue", hex = "#3F5D7D" }
-            , { name = "Green", hex = "#3A5F41" }
-            , { name = "Brown", hex = "#A05B3B" }
+      , colorOptions =
+            [ { name = "Blue", hex = "#3F5D7D", imageUrl = "/images/flip-case-blue.png" }
+            , { name = "Green", hex = "#3A5F41", imageUrl = "/images/flip-case-green.png" }
+            , { name = "Brown", hex = "#A05B3B", imageUrl = "/images/flip-case-brown.png" }
             ]
       , features =
             [ "Quick access card slots"
@@ -47,7 +38,6 @@ getWallets =
             , "Premium, environmentally certified leather"
             , "3 year warranty"
             ]
-      , isInStock = True
       , rating = 4.8
       }
     , { id = 2
@@ -55,12 +45,8 @@ getWallets =
       , category = "Carryology Essentials Edition"
       , price = 119.00
       , description = "Billfold for 5 – 11 cards, folded bills"
-      , images =
-            [ "/images/slim-sleeve-black.png" ]
-      , colorImages =
-            [ "/images/slim-sleeve-black.png" ]
-      , colors =
-            [ { name = "Black", hex = "#000000" }
+      , colorOptions =
+            [ { name = "Black", hex = "#000000", imageUrl = "/images/slim-sleeve-black.png" }
             ]
       , features =
             [ "Magnetic closure mechanism"
@@ -68,7 +54,6 @@ getWallets =
             , "Premium, environmentally certified leather"
             , "5 year warranty"
             ]
-      , isInStock = True
       , rating = 4.9
       }
     , { id = 3
@@ -76,15 +61,9 @@ getWallets =
       , category = "RFID safe"
       , price = 199.00
       , description = "Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets"
-      , images =
-            [ "/images/travel-wallet-green.png" ]  -- Default image
-      , colorImages =
-            [ "/images/travel-wallet-green.png"
-            , "/images/travel-wallet-brown.png"
-            ]
-      , colors =
-            [ { name = "Green", hex = "#3A5F41" }
-            , { name = "Brown", hex = "#A05B3B" }
+      , colorOptions =
+            [ { name = "Green", hex = "#3A5F41", imageUrl = "/images/travel-wallet-green.png" }
+            , { name = "Brown", hex = "#A05B3B", imageUrl = "/images/travel-wallet-brown.png" }
             ]
       , features =
             [ "RFID protection"
@@ -93,7 +72,6 @@ getWallets =
             , "SIM card storage"
             , "Micro travel pen included"
             ]
-      , isInStock = True
       , rating = 4.9
       }
     ]

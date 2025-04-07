@@ -5238,60 +5238,45 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 	[
 		{
 		category: 'RFID safe',
-		colorImages: _List_fromArray(
-			['/images/flip-case-blue.png', '/images/flip-case-green.png', '/images/flip-case-brown.png']),
-		colors: _List_fromArray(
+		colorOptions: _List_fromArray(
 			[
-				{hex: '#3F5D7D', name: 'Blue'},
-				{hex: '#3A5F41', name: 'Green'},
-				{hex: '#A05B3B', name: 'Brown'}
+				{hex: '#3F5D7D', imageUrl: '/images/flip-case-blue.png', name: 'Blue'},
+				{hex: '#3A5F41', imageUrl: '/images/flip-case-green.png', name: 'Green'},
+				{hex: '#A05B3B', imageUrl: '/images/flip-case-brown.png', name: 'Brown'}
 			]),
 		description: 'Card wallet for 6 – 8 cards, folded bills',
 		features: _List_fromArray(
 			['Quick access card slots', 'RFID protection', 'Premium, environmentally certified leather', '3 year warranty']),
 		id: 1,
-		images: _List_fromArray(
-			['/images/flip-case-blue.png']),
-		isInStock: true,
 		name: 'Flip Case',
 		price: 129.00,
 		rating: 4.8
 	},
 		{
 		category: 'Carryology Essentials Edition',
-		colorImages: _List_fromArray(
-			['/images/slim-sleeve-black.png']),
-		colors: _List_fromArray(
+		colorOptions: _List_fromArray(
 			[
-				{hex: '#000000', name: 'Black'}
+				{hex: '#000000', imageUrl: '/images/slim-sleeve-black.png', name: 'Black'}
 			]),
 		description: 'Billfold for 5 – 11 cards, folded bills',
 		features: _List_fromArray(
 			['Magnetic closure mechanism', 'Holds 6-8 cards and cash', 'Premium, environmentally certified leather', '5 year warranty']),
 		id: 2,
-		images: _List_fromArray(
-			['/images/slim-sleeve-black.png']),
-		isInStock: true,
 		name: 'Slim Sleeve',
 		price: 119.00,
 		rating: 4.9
 	},
 		{
 		category: 'RFID safe',
-		colorImages: _List_fromArray(
-			['/images/travel-wallet-green.png', '/images/travel-wallet-brown.png']),
-		colors: _List_fromArray(
+		colorOptions: _List_fromArray(
 			[
-				{hex: '#3A5F41', name: 'Green'},
-				{hex: '#A05B3B', name: 'Brown'}
+				{hex: '#3A5F41', imageUrl: '/images/travel-wallet-green.png', name: 'Green'},
+				{hex: '#A05B3B', imageUrl: '/images/travel-wallet-brown.png', name: 'Brown'}
 			]),
 		description: 'Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets',
 		features: _List_fromArray(
 			['RFID protection', 'Passport pocket', 'Ticket and boarding pass section', 'SIM card storage', 'Micro travel pen included']),
 		id: 3,
-		images: _List_fromArray(
-			['/images/travel-wallet-green.png']),
-		isInStock: true,
 		name: 'Travel Wallet',
 		price: 199.00,
 		rating: 4.9
@@ -5541,33 +5526,32 @@ var $elm$html$Html$Events$onClick = function (msg) {
 var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
 var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
-var $author$project$ProductCard$viewColorOptions = F2(
-	function (model, product) {
-		return A2(
-			$elm$html$Html$div,
-			_List_fromArray(
-				[
-					$elm$html$Html$Attributes$class('color-options')
-				]),
-			A2(
-				$elm$core$List$indexedMap,
-				F2(
-					function (index, color) {
-						return A2(
-							$elm$html$Html$button,
-							_List_fromArray(
-								[
-									$elm$html$Html$Attributes$class(
-									_Utils_eq(index, model.selectedColorIndex) ? 'color-option color-option-selected' : 'color-option'),
-									A2($elm$html$Html$Attributes$style, 'background-color', color.hex),
-									$elm$html$Html$Attributes$title(color.name),
-									$elm$html$Html$Events$onClick(
-									$author$project$ProductCard$SelectColor(index))
-								]),
-							_List_Nil);
-					}),
-				product.colors));
-	});
+var $author$project$ProductCard$viewColorOptions = function (model) {
+	return A2(
+		$elm$html$Html$div,
+		_List_fromArray(
+			[
+				$elm$html$Html$Attributes$class('color-options')
+			]),
+		A2(
+			$elm$core$List$indexedMap,
+			F2(
+				function (index, colorOption) {
+					return A2(
+						$elm$html$Html$button,
+						_List_fromArray(
+							[
+								$elm$html$Html$Attributes$class(
+								_Utils_eq(index, model.selectedColorIndex) ? 'color-option color-option-selected' : 'color-option'),
+								A2($elm$html$Html$Attributes$style, 'background-color', colorOption.hex),
+								$elm$html$Html$Attributes$title(colorOption.name),
+								$elm$html$Html$Events$onClick(
+								$author$project$ProductCard$SelectColor(index))
+							]),
+						_List_Nil);
+				}),
+			model.product.colorOptions));
+};
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$core$List$drop = F2(
 	function (n, list) {
@@ -5606,29 +5590,22 @@ var $elm$html$Html$Attributes$src = function (url) {
 		'src',
 		_VirtualDom_noJavaScriptOrHtmlUri(url));
 };
-var $elm$core$Maybe$withDefault = F2(
-	function (_default, maybe) {
-		if (maybe.$ === 'Just') {
-			var value = maybe.a;
-			return value;
-		} else {
-			return _default;
-		}
-	});
 var $author$project$ProductCard$viewProductImage = function (model) {
-	var imageUrl = (_Utils_cmp(
-		model.selectedColorIndex,
-		$elm$core$List$length(model.product.colorImages)) < 0) ? A2(
-		$elm$core$Maybe$withDefault,
-		A2(
-			$elm$core$Maybe$withDefault,
-			'',
-			$elm$core$List$head(model.product.images)),
-		$elm$core$List$head(
-			A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorImages))) : A2(
-		$elm$core$Maybe$withDefault,
-		'',
-		$elm$core$List$head(model.product.images));
+	var imageUrl = function () {
+		var _v0 = A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorOptions);
+		if (_v0.b) {
+			var colorOption = _v0.a;
+			return colorOption.imageUrl;
+		} else {
+			var _v1 = $elm$core$List$head(model.product.colorOptions);
+			if (_v1.$ === 'Just') {
+				var firstOption = _v1.a;
+				return firstOption.imageUrl;
+			} else {
+				return '';
+			}
+		}
+	}();
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5718,7 +5695,7 @@ var $author$project$ProductCard$view = function (model) {
 								$elm$html$Html$text(
 								'$' + $elm$core$String$fromFloat(model.product.price))
 							])),
-						A2($author$project$ProductCard$viewColorOptions, model, model.product),
+						$author$project$ProductCard$viewColorOptions(model),
 						A2(
 						$elm$html$Html$div,
 						_List_fromArray(
