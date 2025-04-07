@@ -15,7 +15,7 @@ type alias Product =
     , salePrice : Maybe Float
     , description : String
     , images : List String
-    , colorImages : List String  -- Images for different color variants
+    , colorImages : List String
     , colors : List Color
     , features : List String
     , isInStock : Bool

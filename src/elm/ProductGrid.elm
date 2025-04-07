@@ -43,10 +43,6 @@ update msg model =
     case msg of
         ProductCardMsg index cardMsg ->
             let
-                -- Log received message for debugging
-                _ = Debug.log ("Updating card " ++ String.fromInt index ++ " with message") cardMsg
-                
-                -- Update the specific card that received the message
                 updateCard i card =
                     if i == index then
                         let

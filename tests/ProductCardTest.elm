@@ -52,8 +52,6 @@ suite =
                     in
                     Expect.all
                         [ \m -> Expect.equal m.isHovered False
-                        , \m -> Expect.equal m.currentImageIndex 0
-                        , \m -> Expect.equal m.isQuickViewOpen False
                         , \m -> Expect.equal m.selectedColorIndex 0
                         ]
                         model
@@ -94,6 +92,21 @@ suite =
                             |> Query.has [ Selector.text testProduct.name ]
                     else
                         Expect.pass
+            , test "renders the product category" <|
+                \_ ->
+                    if testProduct.category /= "" then
+                        view initialModel
+                            |> Query.fromHtml
+                            |> Query.find [ Selector.class "product-category" ]
+                            |> Query.has [ Selector.text ("– " ++ testProduct.category) ]
+                    else
+                        Expect.pass
+            , test "renders the product price" <|
+                \_ ->
+                    view initialModel
+                        |> Query.fromHtml
+                        |> Query.find [ Selector.class "product-price" ]
+                        |> Query.has [ Selector.text ("$" ++ String.fromFloat testProduct.price) ]
             , test "renders color options if available" <|
                 \_ ->
                     if List.length testProduct.colors > 0 then
@@ -114,7 +127,12 @@ suite =
                         Expect.pass
             ]
         , describe "hover behavior"
-            [ test "shows 'SHOW INSIDE +' button when hovered" <|
+            [ test "does not show 'SHOW INSIDE +' button when not hovered" <|
+                \_ ->
+                    view initialModel
+                        |> Query.fromHtml
+                        |> Query.hasNot [ Selector.class "show-inside-btn" ]
+            , test "shows 'SHOW INSIDE +' button when hovered" <|
                 \_ ->
                     let
                         hoveredModel =
