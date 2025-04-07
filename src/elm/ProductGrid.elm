@@ -66,7 +66,6 @@ update msg model =
 view : Model -> Html Msg
 view model =
     let
-        -- Responsive column count based on window width
         columns =
             if model.windowWidth < 640 then
                 1

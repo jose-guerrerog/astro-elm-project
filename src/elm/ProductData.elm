@@ -32,11 +32,11 @@ getWallets =
       , salePrice = Nothing
       , description = "Card wallet for 6 – 8 cards, folded bills"
       , images =
-            [ "/images/flip-case-blue.png" ]  -- Default image (blue)
+            [ "/images/flip-case-blue.png" ]  -- Default image
       , colorImages =
-            [ "/images/flip-case-blue.png"   -- Blue
-            , "/images/flip-case-green.png"  -- Green
-            , "/images/flip-case-brown.png"  -- Brown
+            [ "/images/flip-case-blue.png"
+            , "/images/flip-case-green.png"
+            , "/images/flip-case-brown.png"
             ]
       , colors =
             [ { name = "Blue", hex = "#3F5D7D" }
@@ -81,10 +81,10 @@ getWallets =
       , salePrice = Nothing
       , description = "Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets"
       , images =
-            [ "/images/travel-wallet-green.png" ]  -- Default image (green)
+            [ "/images/travel-wallet-green.png" ]  -- Default image
       , colorImages =
-            [ "/images/travel-wallet-green.png"  -- Green
-            , "/images/travel-wallet-brown.png"  -- Brown
+            [ "/images/travel-wallet-green.png"
+            , "/images/travel-wallet-brown.png"
             ]
       , colors =
             [ { name = "Green", hex = "#3A5F41" }

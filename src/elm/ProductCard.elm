@@ -71,7 +71,6 @@ viewProductImage model =
     let
         imageUrl =
             if model.selectedColorIndex < List.length model.product.colorImages then
-                -- Get the image at the selected index
                 Maybe.withDefault 
                     (List.head model.product.images |> Maybe.withDefault "") 
                     (List.head (List.drop model.selectedColorIndex model.product.colorImages))
