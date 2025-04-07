@@ -4370,6 +4370,43 @@ function _Browser_load(url)
 		}
 	}));
 }
+
+
+
+var _Bitwise_and = F2(function(a, b)
+{
+	return a & b;
+});
+
+var _Bitwise_or = F2(function(a, b)
+{
+	return a | b;
+});
+
+var _Bitwise_xor = F2(function(a, b)
+{
+	return a ^ b;
+});
+
+function _Bitwise_complement(a)
+{
+	return ~a;
+};
+
+var _Bitwise_shiftLeftBy = F2(function(offset, a)
+{
+	return a << offset;
+});
+
+var _Bitwise_shiftRightBy = F2(function(offset, a)
+{
+	return a >> offset;
+});
+
+var _Bitwise_shiftRightZfBy = F2(function(offset, a)
+{
+	return a >>> offset;
+});
 var $elm$core$Basics$EQ = {$: 'EQ'};
 var $elm$core$Basics$GT = {$: 'GT'};
 var $elm$core$Basics$LT = {$: 'LT'};
@@ -5162,6 +5199,41 @@ var $elm$browser$Browser$element = _Browser_element;
 var $author$project$Main$ProductGridMsg = function (a) {
 	return {$: 'ProductGridMsg', a: a};
 };
+var $elm$core$Array$fromListHelp = F3(
+	function (list, nodeList, nodeListSize) {
+		fromListHelp:
+		while (true) {
+			var _v0 = A2($elm$core$Elm$JsArray$initializeFromList, $elm$core$Array$branchFactor, list);
+			var jsArray = _v0.a;
+			var remainingItems = _v0.b;
+			if (_Utils_cmp(
+				$elm$core$Elm$JsArray$length(jsArray),
+				$elm$core$Array$branchFactor) < 0) {
+				return A2(
+					$elm$core$Array$builderToArray,
+					true,
+					{nodeList: nodeList, nodeListSize: nodeListSize, tail: jsArray});
+			} else {
+				var $temp$list = remainingItems,
+					$temp$nodeList = A2(
+					$elm$core$List$cons,
+					$elm$core$Array$Leaf(jsArray),
+					nodeList),
+					$temp$nodeListSize = nodeListSize + 1;
+				list = $temp$list;
+				nodeList = $temp$nodeList;
+				nodeListSize = $temp$nodeListSize;
+				continue fromListHelp;
+			}
+		}
+	});
+var $elm$core$Array$fromList = function (list) {
+	if (!list.b) {
+		return $elm$core$Array$empty;
+	} else {
+		return A3($elm$core$Array$fromListHelp, list, _List_Nil, 0);
+	}
+};
 var $author$project$ProductData$getWallets = _List_fromArray(
 	[
 		{
@@ -5230,33 +5302,113 @@ var $author$project$ProductCard$init = function (product) {
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
-var $author$project$ProductGrid$init = function (windowWidth) {
+var $author$project$ProductGrid$init = function () {
 	var products = $author$project$ProductData$getWallets;
-	var productCards = A2($elm$core$List$map, $author$project$ProductCard$init, products);
+	var productCards = $elm$core$Array$fromList(
+		A2($elm$core$List$map, $author$project$ProductCard$init, products));
 	return _Utils_Tuple2(
-		{productCards: productCards, products: products, windowWidth: windowWidth},
+		{productCards: productCards, products: products},
 		$elm$core$Platform$Cmd$none);
-};
+}();
 var $elm$core$Platform$Cmd$map = _Platform_map;
-var $author$project$Main$init = function (windowWidth) {
-	var _v0 = $author$project$ProductGrid$init(windowWidth);
-	var productGridModel = _v0.a;
-	var productGridCmd = _v0.b;
+var $author$project$Main$init = function (_v0) {
+	var _v1 = $author$project$ProductGrid$init;
+	var productGridModel = _v1.a;
+	var productGridCmd = _v1.b;
 	return _Utils_Tuple2(
 		{productGrid: productGridModel},
 		A2($elm$core$Platform$Cmd$map, $author$project$Main$ProductGridMsg, productGridCmd));
 };
-var $elm$json$Json$Decode$int = _Json_decodeInt;
-var $author$project$Main$WindowResized = function (a) {
-	return {$: 'WindowResized', a: a};
-};
-var $author$project$Main$windowResized = _Platform_incomingPort('windowResized', $elm$json$Json$Decode$int);
+var $elm$core$Platform$Sub$batch = _Platform_batch;
+var $elm$core$Platform$Sub$none = $elm$core$Platform$Sub$batch(_List_Nil);
 var $author$project$Main$subscriptions = function (_v0) {
-	return $author$project$Main$windowResized($author$project$Main$WindowResized);
+	return $elm$core$Platform$Sub$none;
 };
-var $author$project$ProductGrid$WindowResized = function (a) {
-	return {$: 'WindowResized', a: a};
+var $elm$core$Bitwise$and = _Bitwise_and;
+var $elm$core$Bitwise$shiftRightZfBy = _Bitwise_shiftRightZfBy;
+var $elm$core$Array$bitMask = 4294967295 >>> (32 - $elm$core$Array$shiftStep);
+var $elm$core$Basics$ge = _Utils_ge;
+var $elm$core$Elm$JsArray$unsafeGet = _JsArray_unsafeGet;
+var $elm$core$Array$getHelp = F3(
+	function (shift, index, tree) {
+		getHelp:
+		while (true) {
+			var pos = $elm$core$Array$bitMask & (index >>> shift);
+			var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+			if (_v0.$ === 'SubTree') {
+				var subTree = _v0.a;
+				var $temp$shift = shift - $elm$core$Array$shiftStep,
+					$temp$index = index,
+					$temp$tree = subTree;
+				shift = $temp$shift;
+				index = $temp$index;
+				tree = $temp$tree;
+				continue getHelp;
+			} else {
+				var values = _v0.a;
+				return A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, values);
+			}
+		}
+	});
+var $elm$core$Bitwise$shiftLeftBy = _Bitwise_shiftLeftBy;
+var $elm$core$Array$tailIndex = function (len) {
+	return (len >>> 5) << 5;
 };
+var $elm$core$Array$get = F2(
+	function (index, _v0) {
+		var len = _v0.a;
+		var startShift = _v0.b;
+		var tree = _v0.c;
+		var tail = _v0.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? $elm$core$Maybe$Nothing : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? $elm$core$Maybe$Just(
+			A2($elm$core$Elm$JsArray$unsafeGet, $elm$core$Array$bitMask & index, tail)) : $elm$core$Maybe$Just(
+			A3($elm$core$Array$getHelp, startShift, index, tree)));
+	});
+var $elm$core$Elm$JsArray$unsafeSet = _JsArray_unsafeSet;
+var $elm$core$Array$setHelp = F4(
+	function (shift, index, value, tree) {
+		var pos = $elm$core$Array$bitMask & (index >>> shift);
+		var _v0 = A2($elm$core$Elm$JsArray$unsafeGet, pos, tree);
+		if (_v0.$ === 'SubTree') {
+			var subTree = _v0.a;
+			var newSub = A4($elm$core$Array$setHelp, shift - $elm$core$Array$shiftStep, index, value, subTree);
+			return A3(
+				$elm$core$Elm$JsArray$unsafeSet,
+				pos,
+				$elm$core$Array$SubTree(newSub),
+				tree);
+		} else {
+			var values = _v0.a;
+			var newLeaf = A3($elm$core$Elm$JsArray$unsafeSet, $elm$core$Array$bitMask & index, value, values);
+			return A3(
+				$elm$core$Elm$JsArray$unsafeSet,
+				pos,
+				$elm$core$Array$Leaf(newLeaf),
+				tree);
+		}
+	});
+var $elm$core$Array$set = F3(
+	function (index, value, array) {
+		var len = array.a;
+		var startShift = array.b;
+		var tree = array.c;
+		var tail = array.d;
+		return ((index < 0) || (_Utils_cmp(index, len) > -1)) ? array : ((_Utils_cmp(
+			index,
+			$elm$core$Array$tailIndex(len)) > -1) ? A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			tree,
+			A3($elm$core$Elm$JsArray$unsafeSet, $elm$core$Array$bitMask & index, value, tail)) : A4(
+			$elm$core$Array$Array_elm_builtin,
+			len,
+			startShift,
+			A4($elm$core$Array$setHelp, startShift, index, value, tree),
+			tail));
+	});
 var $author$project$ProductCard$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -5283,60 +5435,36 @@ var $author$project$ProductCard$update = F2(
 	});
 var $author$project$ProductGrid$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'ProductCardMsg') {
-			var index = msg.a;
-			var cardMsg = msg.b;
-			var updateCard = F2(
-				function (i, card) {
-					if (_Utils_eq(i, index)) {
-						var _v1 = A2($author$project$ProductCard$update, cardMsg, card);
-						var updatedCard = _v1.a;
-						return updatedCard;
-					} else {
-						return card;
-					}
-				});
-			var updatedCards = A2($elm$core$List$indexedMap, updateCard, model.productCards);
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{productCards: updatedCards}),
-				$elm$core$Platform$Cmd$none);
-		} else {
-			var width = msg.a;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{windowWidth: width}),
-				$elm$core$Platform$Cmd$none);
-		}
+		var index = msg.a;
+		var cardMsg = msg.b;
+		var maybeCard = A2($elm$core$Array$get, index, model.productCards);
+		var updatedCards = function () {
+			if (maybeCard.$ === 'Just') {
+				var card = maybeCard.a;
+				var _v2 = A2($author$project$ProductCard$update, cardMsg, card);
+				var updatedCard = _v2.a;
+				return A3($elm$core$Array$set, index, updatedCard, model.productCards);
+			} else {
+				return model.productCards;
+			}
+		}();
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{productCards: updatedCards}),
+			$elm$core$Platform$Cmd$none);
 	});
 var $author$project$Main$update = F2(
 	function (msg, model) {
-		if (msg.$ === 'ProductGridMsg') {
-			var subMsg = msg.a;
-			var _v1 = A2($author$project$ProductGrid$update, subMsg, model.productGrid);
-			var updatedProductGrid = _v1.a;
-			var productGridCmd = _v1.b;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{productGrid: updatedProductGrid}),
-				A2($elm$core$Platform$Cmd$map, $author$project$Main$ProductGridMsg, productGridCmd));
-		} else {
-			var width = msg.a;
-			var _v2 = A2(
-				$author$project$ProductGrid$update,
-				$author$project$ProductGrid$WindowResized(width),
-				model.productGrid);
-			var updatedProductGrid = _v2.a;
-			var productGridCmd = _v2.b;
-			return _Utils_Tuple2(
-				_Utils_update(
-					model,
-					{productGrid: updatedProductGrid}),
-				A2($elm$core$Platform$Cmd$map, $author$project$Main$ProductGridMsg, productGridCmd));
-		}
+		var subMsg = msg.a;
+		var _v1 = A2($author$project$ProductGrid$update, subMsg, model.productGrid);
+		var updatedProductGrid = _v1.a;
+		var productGridCmd = _v1.b;
+		return _Utils_Tuple2(
+			_Utils_update(
+				model,
+				{productGrid: updatedProductGrid}),
+			A2($elm$core$Platform$Cmd$map, $author$project$Main$ProductGridMsg, productGridCmd));
 	});
 var $elm$virtual_dom$VirtualDom$map = _VirtualDom_map;
 var $elm$html$Html$map = $elm$virtual_dom$VirtualDom$map;
@@ -5354,8 +5482,29 @@ var $elm$html$Html$Attributes$stringProperty = F2(
 	});
 var $elm$html$Html$Attributes$class = $elm$html$Html$Attributes$stringProperty('className');
 var $elm$html$Html$div = _VirtualDom_node('div');
-var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
-var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
+var $elm$core$Tuple$second = function (_v0) {
+	var y = _v0.b;
+	return y;
+};
+var $elm$core$Array$toIndexedList = function (array) {
+	var len = array.a;
+	var helper = F2(
+		function (entry, _v0) {
+			var index = _v0.a;
+			var list = _v0.b;
+			return _Utils_Tuple2(
+				index - 1,
+				A2(
+					$elm$core$List$cons,
+					_Utils_Tuple2(index, entry),
+					list));
+		});
+	return A3(
+		$elm$core$Array$foldr,
+		helper,
+		_Utils_Tuple2(len - 1, _List_Nil),
+		array).b;
+};
 var $author$project$ProductCard$MouseEnter = {$: 'MouseEnter'};
 var $author$project$ProductCard$MouseLeave = {$: 'MouseLeave'};
 var $elm$core$String$fromFloat = _String_fromNumber;
@@ -5394,6 +5543,8 @@ var $elm$html$Html$Events$onClick = function (msg) {
 		'click',
 		$elm$json$Json$Decode$succeed(msg));
 };
+var $elm$virtual_dom$VirtualDom$style = _VirtualDom_style;
+var $elm$html$Html$Attributes$style = $elm$virtual_dom$VirtualDom$style;
 var $elm$html$Html$Attributes$title = $elm$html$Html$Attributes$stringProperty('title');
 var $author$project$ProductCard$viewColorOptions = F2(
 	function (model, product) {
@@ -5587,7 +5738,6 @@ var $author$project$ProductCard$view = function (model) {
 			]));
 };
 var $author$project$ProductGrid$view = function (model) {
-	var columns = (model.windowWidth < 640) ? 1 : ((model.windowWidth < 1024) ? 2 : 3);
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5600,24 +5750,21 @@ var $author$project$ProductGrid$view = function (model) {
 				$elm$html$Html$div,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('product-grid'),
-						A2(
-						$elm$html$Html$Attributes$style,
-						'grid-template-columns',
-						'repeat(' + ($elm$core$String$fromInt(columns) + ', 1fr)'))
+						$elm$html$Html$Attributes$class('product-grid')
 					]),
 				A2(
-					$elm$core$List$indexedMap,
-					F2(
-						function (index, cardModel) {
-							return A2(
-								$elm$html$Html$map,
-								function (msg) {
-									return A2($author$project$ProductGrid$ProductCardMsg, index, msg);
-								},
-								$author$project$ProductCard$view(cardModel));
-						}),
-					model.productCards))
+					$elm$core$List$map,
+					function (_v0) {
+						var index = _v0.a;
+						var cardModel = _v0.b;
+						return A2(
+							$elm$html$Html$map,
+							function (msg) {
+								return A2($author$project$ProductGrid$ProductCardMsg, index, msg);
+							},
+							$author$project$ProductCard$view(cardModel));
+					},
+					$elm$core$Array$toIndexedList(model.productCards)))
 			]));
 };
 var $author$project$Main$view = function (model) {
@@ -5628,4 +5775,5 @@ var $author$project$Main$view = function (model) {
 };
 var $author$project$Main$main = $elm$browser$Browser$element(
 	{init: $author$project$Main$init, subscriptions: $author$project$Main$subscriptions, update: $author$project$Main$update, view: $author$project$Main$view});
-_Platform_export({'Main':{'init':$author$project$Main$main($elm$json$Json$Decode$int)(0)}});}(this));
+_Platform_export({'Main':{'init':$author$project$Main$main(
+	$elm$json$Json$Decode$succeed(_Utils_Tuple0))(0)}});}(this));

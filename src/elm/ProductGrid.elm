@@ -1,6 +1,6 @@
-module ProductGrid exposing (Model, Msg(..), init, update, view)
+module ProductGrid exposing (Model, Msg(..), init, update, view, subscriptions)
 
-import Browser
+import Array exposing (Array)
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick)
@@ -12,19 +12,17 @@ import ProductData exposing (Product, getWallets)
 
 type alias Model =
     { products : List Product
-    , windowWidth : Int
-    , productCards : List (ProductCard.Model)
+    , productCards : Array ProductCard.Model
     }
 
 
-init : Int -> ( Model, Cmd Msg )
-init windowWidth =
+init : ( Model, Cmd Msg )
+init =
     let
         products = getWallets
-        productCards = List.map ProductCard.init products
+        productCards = Array.fromList (List.map ProductCard.init products)
     in
     ( { products = products
-      , windowWidth = windowWidth
       , productCards = productCards
       }
     , Cmd.none
@@ -35,7 +33,6 @@ init windowWidth =
 
 type Msg
     = ProductCardMsg Int ProductCard.Msg
-    | WindowResized Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -43,47 +40,39 @@ update msg model =
     case msg of
         ProductCardMsg index cardMsg ->
             let
-                updateCard i card =
-                    if i == index then
-                        let
-                            (updatedCard, _) = ProductCard.update cardMsg card
-                        in
-                        updatedCard
-                    else
-                        card
-                        
+                maybeCard = Array.get index model.productCards
                 updatedCards = 
-                    List.indexedMap updateCard model.productCards
+                    case maybeCard of
+                        Just card ->
+                            let
+                                (updatedCard, _) = ProductCard.update cardMsg card
+                            in
+                            Array.set index updatedCard model.productCards
+                        
+                        Nothing ->
+                            model.productCards
             in
             ( { model | productCards = updatedCards }, Cmd.none )
 
-        WindowResized width ->
-            ( { model | windowWidth = width }, Cmd.none )
+
+-- SUBSCRIPTIONS
+
+subscriptions : Model -> Sub Msg
+subscriptions _ =
+    Sub.none  -- No subscriptions needed
 
 
 -- VIEW
 
 view : Model -> Html Msg
 view model =
-    let
-        columns =
-            if model.windowWidth < 640 then
-                1
-            else if model.windowWidth < 1024 then
-                2
-            else
-                3
-    in
     div [ class "product-grid-container" ]
         [ div
-            [ class "product-grid"
-            , style "grid-template-columns" ("repeat(" ++ String.fromInt columns ++ ", 1fr)")
-            ]
-            (List.indexedMap
-                (\index cardModel ->
+            [ class "product-grid" ]  -- CSS handles responsiveness
+            (Array.toIndexedList model.productCards
+                |> List.map (\(index, cardModel) ->
                     Html.map (\msg -> ProductCardMsg index msg)
                         (ProductCard.view cardModel)
                 )
-                model.productCards
             )
         ]

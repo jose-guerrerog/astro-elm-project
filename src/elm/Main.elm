@@ -1,18 +1,13 @@
-port module Main exposing (main)
+module Main exposing (main)
 
 import Browser
 import Html exposing (..)
 import ProductGrid
 
 
--- PORTS
-
-port windowResized : (Int -> msg) -> Sub msg
-
-
 -- MAIN
 
-main : Program Int Model Msg
+main : Program () Model Msg
 main =
     Browser.element
         { init = init
@@ -29,11 +24,11 @@ type alias Model =
     }
 
 
-init : Int -> ( Model, Cmd Msg )
-init windowWidth =
+init : () -> ( Model, Cmd Msg )
+init _ =
     let
         ( productGridModel, productGridCmd ) =
-            ProductGrid.init windowWidth
+            ProductGrid.init
     in
     ( { productGrid = productGridModel }
     , Cmd.map ProductGridMsg productGridCmd
@@ -44,7 +39,6 @@ init windowWidth =
 
 type Msg
     = ProductGridMsg ProductGrid.Msg
-    | WindowResized Int
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -59,21 +53,12 @@ update msg model =
             , Cmd.map ProductGridMsg productGridCmd
             )
 
-        WindowResized width ->
-            let
-                ( updatedProductGrid, productGridCmd ) =
-                    ProductGrid.update (ProductGrid.WindowResized width) model.productGrid
-            in
-            ( { model | productGrid = updatedProductGrid }
-            , Cmd.map ProductGridMsg productGridCmd
-            )
-
 
 -- SUBSCRIPTIONS
 
 subscriptions : Model -> Sub Msg
 subscriptions _ =
-    windowResized WindowResized
+    Sub.none
 
 
 -- VIEW
