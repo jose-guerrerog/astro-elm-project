@@ -12,7 +12,6 @@ type alias Product =
     , name : String
     , category : String
     , price : Float
-    , salePrice : Maybe Float
     , description : String
     , images : List String
     , colorImages : List String
@@ -29,7 +28,6 @@ getWallets =
       , name = "Flip Case"
       , category = "RFID safe"
       , price = 129.00
-      , salePrice = Nothing
       , description = "Card wallet for 6 – 8 cards, folded bills"
       , images =
             [ "/images/flip-case-blue.png" ]  -- Default image
@@ -56,7 +54,6 @@ getWallets =
       , name = "Slim Sleeve"
       , category = "Carryology Essentials Edition"
       , price = 119.00
-      , salePrice = Nothing
       , description = "Billfold for 5 – 11 cards, folded bills"
       , images =
             [ "/images/slim-sleeve-black.png" ]
@@ -78,7 +75,6 @@ getWallets =
       , name = "Travel Wallet"
       , category = "RFID safe"
       , price = 199.00
-      , salePrice = Nothing
       , description = "Passport holder for 4 – 10+ cards, flat bills, passport, pen, tickets"
       , images =
             [ "/images/travel-wallet-green.png" ]  -- Default image

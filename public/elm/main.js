@@ -5183,8 +5183,7 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 		isInStock: true,
 		name: 'Flip Case',
 		price: 129.00,
-		rating: 4.8,
-		salePrice: $elm$core$Maybe$Nothing
+		rating: 4.8
 	},
 		{
 		category: 'Carryology Essentials Edition',
@@ -5203,8 +5202,7 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 		isInStock: true,
 		name: 'Slim Sleeve',
 		price: 119.00,
-		rating: 4.9,
-		salePrice: $elm$core$Maybe$Nothing
+		rating: 4.9
 	},
 		{
 		category: 'RFID safe',
@@ -5224,12 +5222,11 @@ var $author$project$ProductData$getWallets = _List_fromArray(
 		isInStock: true,
 		name: 'Travel Wallet',
 		price: 199.00,
-		rating: 4.9,
-		salePrice: $elm$core$Maybe$Nothing
+		rating: 4.9
 	}
 	]);
 var $author$project$ProductCard$init = function (product) {
-	return {currentImageIndex: 0, isHovered: false, isQuickViewOpen: false, product: product, selectedColorIndex: 0};
+	return {isHovered: false, product: product, selectedColorIndex: 0};
 };
 var $elm$core$Platform$Cmd$batch = _Platform_batch;
 var $elm$core$Platform$Cmd$none = $elm$core$Platform$Cmd$batch(_List_Nil);
@@ -5260,7 +5257,6 @@ var $author$project$Main$subscriptions = function (_v0) {
 var $author$project$ProductGrid$WindowResized = function (a) {
 	return {$: 'WindowResized', a: a};
 };
-var $elm$core$Debug$log = _Debug_log;
 var $author$project$ProductCard$update = F2(
 	function (msg, model) {
 		switch (msg.$) {
@@ -5276,21 +5272,8 @@ var $author$project$ProductCard$update = F2(
 						model,
 						{isHovered: false}),
 					$elm$core$Platform$Cmd$none);
-			case 'QuickView':
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{isQuickViewOpen: true}),
-					$elm$core$Platform$Cmd$none);
-			case 'CloseQuickView':
-				return _Utils_Tuple2(
-					_Utils_update(
-						model,
-						{isQuickViewOpen: false}),
-					$elm$core$Platform$Cmd$none);
 			default:
 				var colorIndex = msg.a;
-				var _v1 = A2($elm$core$Debug$log, 'Color selected', colorIndex);
 				return _Utils_Tuple2(
 					_Utils_update(
 						model,
@@ -5306,18 +5289,14 @@ var $author$project$ProductGrid$update = F2(
 			var updateCard = F2(
 				function (i, card) {
 					if (_Utils_eq(i, index)) {
-						var _v2 = A2($author$project$ProductCard$update, cardMsg, card);
-						var updatedCard = _v2.a;
+						var _v1 = A2($author$project$ProductCard$update, cardMsg, card);
+						var updatedCard = _v1.a;
 						return updatedCard;
 					} else {
 						return card;
 					}
 				});
 			var updatedCards = A2($elm$core$List$indexedMap, updateCard, model.productCards);
-			var _v1 = A2(
-				$elm$core$Debug$log,
-				'Updating card ' + ($elm$core$String$fromInt(index) + ' with message'),
-				cardMsg);
 			return _Utils_Tuple2(
 				_Utils_update(
 					model,
@@ -5428,10 +5407,6 @@ var $author$project$ProductCard$viewColorOptions = F2(
 				$elm$core$List$indexedMap,
 				F2(
 					function (index, color) {
-						var _v0 = A2(
-							$elm$core$Debug$log,
-							'Color option ' + $elm$core$String$fromInt(index),
-							color.name);
 						return A2(
 							$elm$html$Html$button,
 							_List_fromArray(
@@ -5447,9 +5422,6 @@ var $author$project$ProductCard$viewColorOptions = F2(
 					}),
 				product.colors));
 	});
-var $author$project$ProductCard$QuickView = function (a) {
-	return {$: 'QuickView', a: a};
-};
 var $elm$html$Html$Attributes$alt = $elm$html$Html$Attributes$stringProperty('alt');
 var $elm$core$List$drop = F2(
 	function (n, list) {
@@ -5511,9 +5483,6 @@ var $author$project$ProductCard$viewProductImage = function (model) {
 		$elm$core$Maybe$withDefault,
 		'',
 		$elm$core$List$head(model.product.images));
-	var _v0 = A2($elm$core$Debug$log, 'Selected color index', model.selectedColorIndex);
-	var _v1 = A2($elm$core$Debug$log, 'Available color images', model.product.colorImages);
-	var _v2 = A2($elm$core$Debug$log, 'Using image URL', imageUrl);
 	return A2(
 		$elm$html$Html$div,
 		_List_fromArray(
@@ -5535,189 +5504,12 @@ var $author$project$ProductCard$viewProductImage = function (model) {
 				$elm$html$Html$button,
 				_List_fromArray(
 					[
-						$elm$html$Html$Attributes$class('show-inside-btn'),
-						$elm$html$Html$Events$onClick(
-						$author$project$ProductCard$QuickView(model.product.id))
+						$elm$html$Html$Attributes$class('show-inside-btn')
 					]),
 				_List_fromArray(
 					[
 						$elm$html$Html$text('SHOW INSIDE +')
 					])) : $elm$html$Html$text('')
-			]));
-};
-var $author$project$ProductCard$CloseQuickView = {$: 'CloseQuickView'};
-var $elm$html$Html$h2 = _VirtualDom_node('h2');
-var $elm$html$Html$h3 = _VirtualDom_node('h3');
-var $elm$html$Html$p = _VirtualDom_node('p');
-var $author$project$ProductCard$viewQuickViewModal = function (model) {
-	var imageUrl = (_Utils_cmp(
-		model.selectedColorIndex,
-		$elm$core$List$length(model.product.colorImages)) < 0) ? A2(
-		$elm$core$Maybe$withDefault,
-		A2(
-			$elm$core$Maybe$withDefault,
-			'',
-			$elm$core$List$head(model.product.images)),
-		$elm$core$List$head(
-			A2($elm$core$List$drop, model.selectedColorIndex, model.product.colorImages))) : A2(
-		$elm$core$Maybe$withDefault,
-		'',
-		$elm$core$List$head(model.product.images));
-	return A2(
-		$elm$html$Html$div,
-		_List_fromArray(
-			[
-				$elm$html$Html$Attributes$class('quick-view-overlay')
-			]),
-		_List_fromArray(
-			[
-				A2(
-				$elm$html$Html$div,
-				_List_fromArray(
-					[
-						$elm$html$Html$Attributes$class('quick-view-modal')
-					]),
-				_List_fromArray(
-					[
-						A2(
-						$elm$html$Html$button,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('close-modal-btn'),
-								$elm$html$Html$Events$onClick($author$project$ProductCard$CloseQuickView)
-							]),
-						_List_fromArray(
-							[
-								$elm$html$Html$text('×')
-							])),
-						A2(
-						$elm$html$Html$div,
-						_List_fromArray(
-							[
-								$elm$html$Html$Attributes$class('modal-content')
-							]),
-						_List_fromArray(
-							[
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('modal-image-container')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$img,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$src(imageUrl),
-												$elm$html$Html$Attributes$alt(model.product.name),
-												$elm$html$Html$Attributes$class('modal-image')
-											]),
-										_List_Nil)
-									])),
-								A2(
-								$elm$html$Html$div,
-								_List_fromArray(
-									[
-										$elm$html$Html$Attributes$class('modal-info')
-									]),
-								_List_fromArray(
-									[
-										A2(
-										$elm$html$Html$h2,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('modal-product-name')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text(model.product.name)
-											])),
-										A2(
-										$elm$html$Html$div,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('modal-product-category')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text(model.product.category)
-											])),
-										A2(
-										$elm$html$Html$p,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('modal-product-description')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text(model.product.description)
-											])),
-										A2(
-										$elm$html$Html$div,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('modal-price')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text(
-												'$' + $elm$core$String$fromFloat(model.product.price))
-											])),
-										A2(
-										$elm$html$Html$div,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('modal-colors-section')
-											]),
-										_List_fromArray(
-											[
-												A2(
-												$elm$html$Html$h3,
-												_List_Nil,
-												_List_fromArray(
-													[
-														$elm$html$Html$text('Available Colors')
-													])),
-												A2(
-												$elm$html$Html$div,
-												_List_fromArray(
-													[
-														$elm$html$Html$Attributes$class('modal-color-options')
-													]),
-												A2(
-													$elm$core$List$indexedMap,
-													F2(
-														function (index, color) {
-															return A2(
-																$elm$html$Html$button,
-																_List_fromArray(
-																	[
-																		$elm$html$Html$Attributes$class(
-																		_Utils_eq(index, model.selectedColorIndex) ? 'modal-color-option modal-color-selected' : 'modal-color-option'),
-																		A2($elm$html$Html$Attributes$style, 'background-color', color.hex),
-																		$elm$html$Html$Attributes$title(color.name),
-																		$elm$html$Html$Events$onClick(
-																		$author$project$ProductCard$SelectColor(index))
-																	]),
-																_List_Nil);
-														}),
-													model.product.colors))
-											])),
-										A2(
-										$elm$html$Html$button,
-										_List_fromArray(
-											[
-												$elm$html$Html$Attributes$class('add-to-cart-btn')
-											]),
-										_List_fromArray(
-											[
-												$elm$html$Html$text('Add to Cart')
-											]))
-									]))
-							]))
-					]))
 			]));
 };
 var $author$project$ProductCard$view = function (model) {
@@ -5791,8 +5583,7 @@ var $author$project$ProductCard$view = function (model) {
 							[
 								$elm$html$Html$text(model.product.description)
 							]))
-					])),
-				model.isQuickViewOpen ? $author$project$ProductCard$viewQuickViewModal(model) : $elm$html$Html$text('')
+					]))
 			]));
 };
 var $author$project$ProductGrid$view = function (model) {

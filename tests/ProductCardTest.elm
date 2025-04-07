@@ -17,7 +17,6 @@ testProduct =
             , name = ""
             , category = ""
             , price = 0
-            , salePrice = Nothing
             , description = ""
             , images = []
             , colorImages = []
